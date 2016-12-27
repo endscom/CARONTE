@@ -1,4 +1,4 @@
-package com.guma.desarrollo.caronte;
+package com.guma.desarrollo.core;
 
 public class Indicadores {
     private int imagen;

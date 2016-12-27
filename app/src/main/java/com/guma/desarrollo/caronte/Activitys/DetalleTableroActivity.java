@@ -1,17 +1,14 @@
-package com.guma.desarrollo.caronte;
+package com.guma.desarrollo.caronte.Activitys;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.guma.desarrollo.caronte.Adapters.ClientesAdapter;
+import com.guma.desarrollo.caronte.ClientesRepository;
+import com.guma.desarrollo.caronte.R;
 
 public class DetalleTableroActivity extends AppCompatActivity {
     private RecyclerView recycler;
@@ -24,9 +21,9 @@ public class DetalleTableroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detalle_tablero);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("DETALLE DE " + "XXXX");
-        final ListView mLeadsList = (ListView) findViewById(R.id.list_detalle_tablero);
-        final LeadsAdapter mLeadsAdapter = new LeadsAdapter(this,LeadsRepository.getInstance().getLeads());
-        mLeadsList.setAdapter(mLeadsAdapter);
+        final ListView mClienteList = (ListView) findViewById(R.id.list_detalle_tablero);
+        final ClientesAdapter mLeadsAdapter = new ClientesAdapter(this, ClientesRepository.getInstance().getClientes());
+        mClienteList.setAdapter(mLeadsAdapter);
 
     }
     @Override

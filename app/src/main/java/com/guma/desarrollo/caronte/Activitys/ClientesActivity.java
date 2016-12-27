@@ -1,4 +1,4 @@
-package com.guma.desarrollo.caronte;
+package com.guma.desarrollo.caronte.Activitys;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,7 +7,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import com.guma.desarrollo.caronte.Adapters.ClientesAdapter;
+import com.guma.desarrollo.caronte.ClientesRepository;
+import com.guma.desarrollo.caronte.R;
 
 public class ClientesActivity extends AppCompatActivity {
 
@@ -17,13 +20,12 @@ public class ClientesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_clientes);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("LISTA DE CLIENTES");
-        final ListView mLeadsList = (ListView) findViewById(R.id.leads_list);
-        final LeadsAdapter mLeadsAdapter = new LeadsAdapter(this,LeadsRepository.getInstance().getLeads());
-        mLeadsList.setAdapter(mLeadsAdapter);
-        mLeadsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        final ListView mClienteList = (ListView) findViewById(R.id.leads_list);
+        final ClientesAdapter mClientesAdapter = new ClientesAdapter(this, ClientesRepository.getInstance().getClientes());
+        mClienteList .setAdapter(mClientesAdapter);
+        mClienteList .setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //mLeadsList.getItemAtPosition(position)
                 startActivity(new Intent(ClientesActivity.this,TableroClienteActivity.class));
             }
         });

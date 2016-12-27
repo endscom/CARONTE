@@ -1,4 +1,4 @@
-package com.guma.desarrollo.caronte;
+package com.guma.desarrollo.caronte.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.guma.desarrollo.core.Cliente;
+import com.guma.desarrollo.caronte.R;
 
 import java.util.List;
 
@@ -16,18 +18,16 @@ import java.util.List;
  * Created by maryan.espinoza on 27/12/2016.
  */
 
-public class LeadsAdapter extends ArrayAdapter<Lead> {
-    public LeadsAdapter(Context context, List<Lead> objects) {
+public class ClientesAdapter extends ArrayAdapter<Cliente> {
+    public ClientesAdapter(Context context, List<Cliente> objects) {
         super(context, 0, objects);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Obtener inflater.
-        LayoutInflater inflater = (LayoutInflater) getContext()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        // ¿Existe el view actual?
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         if (null == convertView) {
             convertView = inflater.inflate(
                     R.layout.list_item_lead,
@@ -35,20 +35,17 @@ public class LeadsAdapter extends ArrayAdapter<Lead> {
                     false);
         }
 
-        // Referencias UI.
         ImageView avatar = (ImageView) convertView.findViewById(R.id.iv_avatar);
         TextView name = (TextView) convertView.findViewById(R.id.tv_name);
         TextView title = (TextView) convertView.findViewById(R.id.tv_title);
         TextView company = (TextView) convertView.findViewById(R.id.tv_company);
 
-        // Lead actual.
-        Lead lead = getItem(position);
+        Cliente cliente = getItem(position);
 
-        // Setup.
-        Glide.with(getContext()).load(lead.getImage()).into(avatar);
-        name.setText(lead.getName());
-        title.setText(lead.getTitle());
-        company.setText(lead.getCompany());
+        Glide.with(getContext()).load(cliente.getImage()).into(avatar);
+        name.setText(cliente.getName());
+        title.setText(cliente.getTitle());
+        company.setText(cliente.getCompany());
 
         return convertView;
     }

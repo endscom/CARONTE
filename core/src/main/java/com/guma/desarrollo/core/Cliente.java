@@ -1,18 +1,18 @@
-package com.guma.desarrollo.caronte;
+package com.guma.desarrollo.core;
 
 import java.util.UUID;
 
 /**
  * Created by maryan.espinoza on 27/12/2016.
  */
-public class Lead {
+public class Cliente {
     private String mId;
     private String mName;
     private String mTitle;
     private String mCompany;
     private int mImage;
 
-    public Lead(String name, String title, String company, int image) {
+    public Cliente(String name, String title, String company, int image) {
         mId = UUID.randomUUID().toString();
         mName = name;
         mTitle = title;

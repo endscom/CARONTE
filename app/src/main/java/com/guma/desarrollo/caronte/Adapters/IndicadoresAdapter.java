@@ -1,15 +1,17 @@
-package com.guma.desarrollo.caronte;
+package com.guma.desarrollo.caronte.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.guma.desarrollo.caronte.Activitys.DetalleTableroActivity;
+import com.guma.desarrollo.core.Indicadores;
+import com.guma.desarrollo.caronte.R;
 
 import java.util.List;
 

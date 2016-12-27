@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Caronte</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Usuario</string>
+    <string name="prompt_password">Credenciales</string>
+    <string name="action_sign_in">Acceder</string>
+    <string name="action_sign_in_short">Acceder</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="title_activity_tablero">TableroActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="card_facturado">Facturado</string>
+    <string name="card_VentasTotales">Ventas Totales</string>
+    <string name="action_cuota_venta">Cuota de Venta</string>
+    <string name="action_producto_facturado">Producto de Facturado</string>
+    <string name="action_recuperacion_efectivo">Recuperacion de Efectivo</string>
+</resources>

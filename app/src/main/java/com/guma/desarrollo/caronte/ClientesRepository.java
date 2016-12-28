@@ -19,8 +19,8 @@ public class ClientesRepository {
     }
 
     private ClientesRepository() {
-        for (int i=0;i<=100;i++){
-            saveLead(new Cliente("CLIENTE " + i, "Direccion.", "información", R.drawable.indicador));
+        for (int i=0;i<=20;i++){
+            saveLead(new Cliente("CLIENTE " + i, "Direccion.", "información", R.drawable.logo));
 
         }
     }

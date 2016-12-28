@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.guma.desarrollo.caronte.Activitys.DetalleTableroActivity;
 import com.guma.desarrollo.core.Indicadores;
@@ -18,9 +19,6 @@ import java.util.List;
 
     public class IndicadoresAdapter extends RecyclerView.Adapter<IndicadoresAdapter.IndicadorViewHolder>  {
     private List<Indicadores> items;
-        private Context context;
-
-
         public class IndicadorViewHolder extends RecyclerView.ViewHolder{
         public ImageView imagen;
         public TextView nombre;
@@ -50,13 +48,14 @@ import java.util.List;
     public void onBindViewHolder(final IndicadorViewHolder viewHolder, final int i) {
         viewHolder.imagen.setImageResource(items.get(i).getImagen());
         viewHolder.nombre.setText(items.get(i).getNombre());
-        viewHolder.visitas.setText("Visitas:"+String.valueOf(items.get(i).getVisitas()));
+        viewHolder.visitas.setText(String.valueOf(items.get(i).getVisitas()));
 
         viewHolder.imagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                v.getContext().startActivity(new Intent(v.getContext(),DetalleTableroActivity.class));
+                Intent ints = new Intent(v.getContext(),DetalleTableroActivity.class);
+                ints.putExtra("TITULO",items.get(i).getNombre());
+                v.getContext().startActivity(ints);
             }
         });
 

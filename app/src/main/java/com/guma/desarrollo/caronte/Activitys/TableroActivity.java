@@ -48,12 +48,12 @@ public class TableroActivity extends AppCompatActivity
 
         List items = new ArrayList();
 
-        items.add(new Indicadores(R.drawable.indicador, "FACTURADO", 0));
-        items.add(new Indicadores(R.drawable.indicador, "VENTA TOTALES", 0));
-        items.add(new Indicadores(R.drawable.indicador, "VENTA POR ARTICULO", 342));
-        items.add(new Indicadores(R.drawable.indicador, "RECUPERACION DE CARTERA", 0));
-        items.add(new Indicadores(R.drawable.indicador, "PROMEDIO POR ITEM", 0));
-        items.add(new Indicadores(R.drawable.indicador, "PROMEDIO POR FACTURA", 230));
+        items.add(new Indicadores(R.drawable.logo, "FACTURADO", 0));
+        items.add(new Indicadores(R.drawable.logo, "VENTA TOTALES", 0));
+        items.add(new Indicadores(R.drawable.logo, "VENTA POR ARTICULO", 342));
+        items.add(new Indicadores(R.drawable.logo, "RECUPERACION DE CARTERA", 0));
+        items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR ITEM", 0));
+        items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR FACTURA", 230));
 
         recycler = (RecyclerView) findViewById(R.id.my_recycler_view);
         recycler.setHasFixedSize(true);

@@ -9,7 +9,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.guma.desarrollo.caronte.Activitys.LoginActivity">
-
+    <ImageView
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:src="@drawable/logo_color"/>
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
@@ -56,12 +60,25 @@
 
             <Button
                 android:id="@+id/sign_in_button"
-                style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/Blanco"
                 android:text="@string/action_sign_in"
-                android:textStyle="bold" />
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"/>
+            <TextView
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/copy_right_1"/>
+            <TextView
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/copy_right_2"/>
 
         </LinearLayout>
     </ScrollView>

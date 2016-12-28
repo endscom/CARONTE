@@ -1,6 +1,7 @@
 package com.guma.desarrollo.caronte.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.guma.desarrollo.core.Cliente;
 import com.guma.desarrollo.caronte.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,9 +21,12 @@ import java.util.List;
  */
 
 public class ClientesAdapter extends ArrayAdapter<Cliente> {
+    private static final String TAG = "ClienteAdapter";
+
     public ClientesAdapter(Context context, List<Cliente> objects) {
         super(context, 0, objects);
     }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -48,5 +53,24 @@ public class ClientesAdapter extends ArrayAdapter<Cliente> {
         company.setText(cliente.getCompany());
 
         return convertView;
+    }
+    private List<Cliente> items;
+    public List<Cliente> getFilter(String query,List<Cliente> clst) {
+
+        List<Cliente> newitems = new ArrayList<>();
+
+        query = query.toLowerCase();
+        if (query.isEmpty()){ newitems.addAll(clst);
+
+        }else{
+            for (Cliente obj : clst){
+                if (obj.getName().toLowerCase().contains(query))
+                {
+                    newitems.add(new Cliente(obj.getName(),obj.getTitle(),obj.getCompany(),R.id.iv_avatar));
+                }
+            }
+
+        }
+        return newitems;
     }
 }

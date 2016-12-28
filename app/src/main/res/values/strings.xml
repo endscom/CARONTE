@@ -2,8 +2,8 @@
     <string name="app_name">Caronte</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Usuario</string>
-    <string name="prompt_password">Credenciales</string>
+    <string name="prompt_email">Agente</string>
+    <string name="prompt_password">Contraseña</string>
     <string name="action_sign_in">Acceder</string>
     <string name="action_sign_in_short">Acceder</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -24,4 +24,7 @@
     <string name="action_cuota_venta">Cuota de Venta</string>
     <string name="action_producto_facturado">Producto de Facturado</string>
     <string name="action_recuperacion_efectivo">Recuperacion de Efectivo</string>
+    <string name="action_info_cliente">Info. Cliente</string>
+    <string name="copy_right_1">Copyright © 2016, UNIMARK S.A.</string>
+    <string name="copy_right_2">v1.1.0</string>
 </resources>

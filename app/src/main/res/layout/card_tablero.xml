@@ -7,51 +7,46 @@
     card_view:cardUseCompatPadding="true">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/imagen"
             android:layout_width="90dp"
             android:layout_height="90dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginLeft="25dp"
             android:scaleType="centerCrop" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/nombre"
-            android:layout_toRightOf="@+id/imagen"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="10dp" />
+       <LinearLayout
+           android:orientation="vertical"
+           android:layout_marginLeft="125dp"
+           android:layout_marginTop="13dp"
+           android:gravity="center_vertical"
+           android:layout_width="match_parent"
+           android:layout_height="100dp">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textAppearance="?android:attr/textAppearanceLarge"
+               android:text="Large Text"
+               android:id="@+id/nombre"
+               android:layout_toRightOf="@+id/imagen"
+               android:layout_alignParentTop="true"
+               />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Small Text"
-            android:id="@+id/visitas"
-            android:layout_below="@+id/nombre"
-            android:layout_alignLeft="@+id/nombre" />
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:background="#ffd5d5d5"
-            android:id="@+id/linea"
-            android:layout_above="@+id/compartir"
-            android:layout_toRightOf="@+id/imagen">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textAppearance="?android:attr/textAppearanceLarge"
+               android:text="Small Text"
+               android:id="@+id/visitas"
+               android:layout_below="@+id/nombre"
+               android:layout_alignLeft="@+id/nombre" />
+       </LinearLayout>
 
-        </View>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/compartir"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/ic_remove_red_eye_black_24dp" />
+
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

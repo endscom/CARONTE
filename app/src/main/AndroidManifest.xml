@@ -27,8 +27,11 @@
             android:label="@string/title_activity_tablero"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activitys.DetalleTableroActivity" />
-        <activity android:name=".Activitys.ClientesActivity" />
-        <activity android:name=".Activitys.TableroClienteActivity"></activity>
+        <activity android:name=".Activitys.ClientesActivity"
+            android:theme="@style/AppTheme.NoActionBar_2">
+
+        </activity>
+        <activity android:name=".Activitys.TableroClienteActivity"/>
     </application>
 
 </manifest>

@@ -12,9 +12,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.guma.desarrollo.caronte.Adapters.ClientesAdapter;
-import com.guma.desarrollo.caronte.ClientesRepository;
+import com.guma.desarrollo.caronte.AsyncHttpManager.ClientesRepository;
 import com.guma.desarrollo.caronte.R;
-import com.guma.desarrollo.core.Cliente;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 public class ClientesActivity extends AppCompatActivity {
@@ -36,7 +35,7 @@ public class ClientesActivity extends AppCompatActivity {
         setTitle("LISTA DE CLIENTES");
 
         mClienteList = (ListView) findViewById(R.id.leads_list);
-        mClientesAdapter = new ClientesAdapter(this, ClientesRepository.getInstance().getClientes());
+        mClientesAdapter = new ClientesAdapter(this, ClientesRepository.getInstance(ClientesActivity.this).getClientes());
         mClienteList.setAdapter(mClientesAdapter);
 
         mClienteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -50,9 +49,9 @@ public class ClientesActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                mClientesAdapter = new ClientesAdapter(ClientesActivity.this, mClientesAdapter.getFilter(query,ClientesRepository.getInstance().getClientes()));
+                mClientesAdapter = new ClientesAdapter(ClientesActivity.this, mClientesAdapter.getFilter(query,ClientesRepository.getInstance(ClientesActivity.this).getClientes()));
                 if (mClientesAdapter.getCount() == 0){
-                    mClienteList.setAdapter(new ClientesAdapter(ClientesActivity.this, ClientesRepository.getInstance().getClientes()));
+                    mClienteList.setAdapter(new ClientesAdapter(ClientesActivity.this, ClientesRepository.getInstance(ClientesActivity.this).getClientes()));
                     Toast.makeText(ClientesActivity.this, "No se Encontro Resultado.reos", Toast.LENGTH_SHORT).show();
                 }else {
                     mClienteList.setAdapter(mClientesAdapter);

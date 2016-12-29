@@ -19,7 +19,7 @@ import java.io.OutputStream;
 public final class SQLiteHelper extends SQLiteOpenHelper
 {
     
-    public static final String DATABASE = "there.db";
+    public static final String DATABASE = "caronte.db";
     private static final int flag = SQLiteDatabase.NO_LOCALIZED_COLLATORS;//database version
     //private static final int flag = 1;
     private final String path;
@@ -50,6 +50,23 @@ public final class SQLiteHelper extends SQLiteOpenHelper
         boolean ok = checkDB != null;
         if (ok) { checkDB.close(); }
         return ok;
+    }
+    public static void ExecuteSQL(String basedir, Context context, String SQL){
+        SQLiteDatabase myDataBase = null;
+        SQLiteHelper myDbHelper = null;
+        try
+        {
+            myDbHelper = new SQLiteHelper(basedir, context);
+            myDataBase = myDbHelper.getWritableDatabase();
+            myDataBase.execSQL(SQL);
+
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        finally
+        {
+            if(myDataBase != null) { myDataBase.close(); }
+            if(myDbHelper != null) { myDbHelper.close(); }
+        }
     }
 
     @Override

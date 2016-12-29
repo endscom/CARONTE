@@ -7,11 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.guma.desarrollo.caronte.Adapters.ClientesAdapter;
 import com.guma.desarrollo.caronte.Adapters.IndicadoresAdapter;
-import com.guma.desarrollo.caronte.ClientesRepository;
+import com.guma.desarrollo.caronte.AsyncHttpManager.ClientesRepository;
 import com.guma.desarrollo.core.Indicadores;
 import com.guma.desarrollo.caronte.R;
 
@@ -70,7 +69,7 @@ public class TableroClienteActivity extends AppCompatActivity {
     }
 
     private void ProductoFacturado(){
-        mClientesAdapter = new ClientesAdapter(this, ClientesRepository.getInstance().getClientes());
+        mClientesAdapter = new ClientesAdapter(this, ClientesRepository.getInstance(TableroClienteActivity.this).getClientes());
         mClienteList.setAdapter(mClientesAdapter);
     }
     private void infoCliente(){

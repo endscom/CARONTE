@@ -12,10 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.guma.desarrollo.caronte.Adapters.IndicadoresAdapter;
+import com.guma.desarrollo.caronte.AsyncHttpManager.ClientesRepository;
 import com.guma.desarrollo.core.Indicadores;
 import com.guma.desarrollo.caronte.R;
+import com.guma.desarrollo.core.ManagerURI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +65,18 @@ public class TableroActivity extends AppCompatActivity
         recycler.setLayoutManager(lManager);
         adapter = new IndicadoresAdapter(items);
         recycler.setAdapter(adapter);
+
+        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ManagerURI.isOnlinea(TableroActivity.this)){
+                    ClientesRepository.getAsyncHttpClientes("F06","0",TableroActivity.this);
+                }else {
+                    Toast.makeText(TableroActivity.this, "Sin permiso de internet", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
     }
 
     @Override

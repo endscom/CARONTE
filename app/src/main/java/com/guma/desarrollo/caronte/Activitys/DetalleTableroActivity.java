@@ -1,6 +1,5 @@
 package com.guma.desarrollo.caronte.Activitys;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +7,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.guma.desarrollo.caronte.Adapters.ClientesAdapter;
-import com.guma.desarrollo.caronte.ClientesRepository;
+import com.guma.desarrollo.caronte.AsyncHttpManager.ClientesRepository;
 import com.guma.desarrollo.caronte.R;
 
 public class DetalleTableroActivity extends AppCompatActivity {
@@ -24,7 +23,7 @@ public class DetalleTableroActivity extends AppCompatActivity {
 
         setTitle(getIntent().getStringExtra("TITULO"));
         final ListView mClienteList = (ListView) findViewById(R.id.list_detalle_tablero);
-        final ClientesAdapter mLeadsAdapter = new ClientesAdapter(this, ClientesRepository.getInstance().getClientes());
+        final ClientesAdapter mLeadsAdapter = new ClientesAdapter(this, ClientesRepository.getInstance(DetalleTableroActivity.this).getClientes());
         mClienteList.setAdapter(mLeadsAdapter);
 
     }

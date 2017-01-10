@@ -27,4 +27,23 @@
     <string name="action_info_cliente">Info. Cliente</string>
     <string name="copy_right_1">Copyright © 2016, UNIMARK S.A.</string>
     <string name="copy_right_2">v1.1.0</string>
+    <string name="act_Clientes">Clientes</string>
+    <string name="act_plan_trabajo">Plan de Trabajo</string>
+    <string name="app_label">Buscar</string>
+    <string name="title_activity_agenda">AgendaActivity</string>
+    <string name="search">Buscar</string>
+
+
+
+
+    <string name="action_today"></string>
+    <string name="action_day_view">Hoy</string>
+    <string name="action_three_day_view">3 dias</string>
+    <string name="action_week_view">Semana</string>
+    <string name="title_activity_basic">Basico</string>
+    <string name="title_activity_asynchronous"></string>
+    <string name="async_error">Could not download events from the internet</string>
+    <string name="title_activity_menu">MenuActivity</string>
+
+
 </resources>

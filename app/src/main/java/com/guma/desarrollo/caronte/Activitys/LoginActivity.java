@@ -53,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+// TODO: 29/12/2016 PENDIENTE DE QUE LA FUNCION SIEMPRE INICIALICE EN FALSE
 
 
 

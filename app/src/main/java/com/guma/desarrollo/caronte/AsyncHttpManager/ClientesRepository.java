@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.guma.desarrollo.caronte.R;
 import com.guma.desarrollo.core.Cliente;
@@ -63,12 +65,14 @@ public class ClientesRepository {
 
                     jsonArray = new JSONArray(new String(responseBody));
                     JSONObject joClientes = (JSONObject) jsonArray.getJSONObject(0).get("CLIENTES");
+
                     SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),cxnt,"DELETE FROM CLIENTES");
                     for (int i=0;i<joClientes.length();i++)
                     {
                         SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,joClientes.getString("CLIENTES"+i));
                     }
 
+                    SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,String.valueOf(jsonArray.getJSONObject(0).get("PROMEDIOS")));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -81,6 +85,36 @@ public class ClientesRepository {
 
             }
         });
+    }
+    public  static String[] getPromedios(Context ctx){
+        SQLiteDatabase myDataBase = null;
+        SQLiteHelper myDbHelper = null;
+        String[] rPromedios = new String[0];
+
+        try
+        {
+            myDbHelper = new SQLiteHelper(ManagerURI.getDIR_DB(), ctx);
+            myDataBase = myDbHelper.getReadableDatabase();
+            Cursor cursor = myDataBase.rawQuery("SELECT * FROM PROMEDIOS", null);
+            if(cursor.getCount() > 0)
+            {
+                cursor.moveToFirst();
+                while(!cursor.isAfterLast())
+                {
+                    rPromedios[0] = cursor.getString(cursor.getColumnIndex("PRM_ART"));
+                    //rPromedios[1] = cursor.getString(cursor.getColumnIndex("PRM_VTA"));
+
+                    cursor.moveToNext();
+                }
+            }
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        finally
+        {
+            if(myDataBase != null) { myDataBase.close(); }
+            if(myDbHelper != null) { myDbHelper.close(); }
+        }
+        return rPromedios;
     }
 
     private ClientesRepository(Context ctx){
@@ -110,4 +144,6 @@ public class ClientesRepository {
         }
 
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.guma.desarrollo.caronte.Activitys;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,12 +54,22 @@ public class TableroActivity extends AppCompatActivity
 
         List items = new ArrayList();
 
-        items.add(new Indicadores(R.drawable.logo, "FACTURADO", 0));
-        items.add(new Indicadores(R.drawable.logo, "VENTA TOTALES", 0));
-        items.add(new Indicadores(R.drawable.logo, "VENTA POR ARTICULO", 342));
-        items.add(new Indicadores(R.drawable.logo, "RECUPERACION DE CARTERA", 0));
-        items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR ITEM", 0));
-        items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR FACTURA", 230));
+        items.add(new Indicadores(R.drawable.logo, "FACTURADO", "0"));
+        items.add(new Indicadores(R.drawable.logo, "VENTA TOTALES", "0"));
+        items.add(new Indicadores(R.drawable.logo, "VENTA POR ARTICULO", "0"));
+        items.add(new Indicadores(R.drawable.logo, "RECUPERACION DE CARTERA", "0"));
+
+        String cursor[] = ClientesRepository.getPromedios(TableroActivity.this);
+
+        Log.d("", "onCreate: " + String.valueOf(cursor[0]));
+
+        if(cursor.length > 0)
+        {
+
+            items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR ITEM", cursor[0]));
+            items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR FACTURA", cursor[0]));
+        }
+
 
         recycler = (RecyclerView) findViewById(R.id.my_recycler_view);
         recycler.setHasFixedSize(true);
@@ -112,6 +124,8 @@ public class TableroActivity extends AppCompatActivity
 
         if (id == R.id.nav_Clientes) {
             startActivity(new Intent(TableroActivity.this,ClientesActivity.class));
+        } else if (id == R.id.nav_plan) {
+            startActivity(new Intent(TableroActivity.this,AgendaActivity.class));
         } else if (id == R.id.nav_salir) {
             finish();
         }

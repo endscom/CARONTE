@@ -74,24 +74,24 @@ public class TableroClienteActivity extends AppCompatActivity {
     }
     private void infoCliente(){
         List items = new ArrayList();
-        items.add(new Indicadores(R.drawable.logo, "VENTAS AL VALOR", 0));
-        items.add(new Indicadores(R.drawable.logo, "ITEM FACTURADO", 0));
-        items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR FACTURA", 0));
-        items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR ITEM FACTURADO", 0));
+        items.add(new Indicadores(R.drawable.logo, "VENTAS AL VALOR", "0"));
+        items.add(new Indicadores(R.drawable.logo, "ITEM FACTURADO", "0"));
+        items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR FACTURA", "0"));
+        items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR ITEM FACTURADO", "0"));
         adapter = new IndicadoresAdapter(items);
         recycler.setAdapter(adapter);
     }
     private void recuperacion(){
         List items = new ArrayList();
-        items.add(new Indicadores(R.drawable.logo, "META", 0));
-        items.add(new Indicadores(R.drawable.logo, "RECUPERADO", 0));
+        items.add(new Indicadores(R.drawable.logo, "META", "0"));
+        items.add(new Indicadores(R.drawable.logo, "RECUPERADO", "0"));
         adapter = new IndicadoresAdapter(items);
         recycler.setAdapter(adapter);
     }
     private void cuotaVenta(){
         List items = new ArrayList();
-        items.add(new Indicadores(R.drawable.logo, "META", 0));
-        items.add(new Indicadores(R.drawable.logo, "VENDIDO", 0));
+        items.add(new Indicadores(R.drawable.logo, "META", "0"));
+        items.add(new Indicadores(R.drawable.logo, "VENDIDO", "0"));
         adapter = new IndicadoresAdapter(items);
         recycler.setAdapter(adapter);
     }

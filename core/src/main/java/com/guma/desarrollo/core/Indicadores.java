@@ -3,9 +3,9 @@ package com.guma.desarrollo.core;
 public class Indicadores {
     private int imagen;
     private String nombre;
-    private int visitas;
+    private String visitas;
 
-    public Indicadores(int imagen, String nombre, int visitas) {
+    public Indicadores(int imagen, String nombre, String visitas) {
         this.imagen = imagen;
         this.nombre = nombre;
         this.visitas = visitas;
@@ -15,7 +15,7 @@ public class Indicadores {
         return nombre;
     }
 
-    public int getVisitas() {
+    public String getVisitas() {
         return visitas;
     }
 

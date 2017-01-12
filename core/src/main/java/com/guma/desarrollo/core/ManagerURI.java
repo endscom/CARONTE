@@ -12,17 +12,20 @@ import java.io.File;
  */
 
 public class ManagerURI {
-    private static String SERVER = "192.168.1.78";
+    //private static String SERVER = "192.168.1.78";
     //private static String SERVER = "165.98.75.219:8448";
-    //private static String SERVER = "192.168.1.155:8080";
-    private static String URL_CLENTES= "http://"+ SERVER +"/rest_app_venta/CLIENTES.php";
+    private static String SERVER = "192.168.1.155:8080";
+    private static String URL_CLENTES= "http://"+ SERVER + "/rest_app_venta/CLIENTES.php";
     private static String URL_VENDEDOR="http://"+ SERVER + "/rest_app_venta/VENDEDORES.php";
+    private static String URL_FACTURAS="http://"+ SERVER + "/rest_app_venta/FACTURAS.php";
 
     private static String DIR_DB = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator;
     //private static String DIR_DB = "com.guma.desarrollo.caronte" + File.separator;
 
 
     public static String getURL_CLENTES() { return URL_CLENTES; }
+
+    public static String getURL_FACTURAS() { return URL_FACTURAS; }
 
     public static String getURL_VENDEDOR() { return  URL_VENDEDOR; }
 

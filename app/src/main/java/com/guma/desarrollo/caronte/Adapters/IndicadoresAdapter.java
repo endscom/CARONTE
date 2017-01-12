@@ -55,7 +55,8 @@ import java.util.List;
             public void onClick(View v) {
                 Intent ints = new Intent(v.getContext(),DetalleTableroActivity.class);
                 ints.putExtra("TITULO",items.get(i).getNombre());
-                v.getContext().startActivity(ints);
+                /*if ((items.get(i).getNombre()!="PROMEDIO POR ITEM") && (items.get(i).getNombre()!="PROMEDIO POR FACTURA") )*/
+                   v.getContext().startActivity(ints);
             }
         });
 

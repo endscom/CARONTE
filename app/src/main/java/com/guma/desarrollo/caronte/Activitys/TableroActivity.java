@@ -1,8 +1,11 @@
 package com.guma.desarrollo.caronte.Activitys;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.design.widget.NavigationView;
@@ -19,6 +22,7 @@ import android.widget.Toast;
 
 import com.guma.desarrollo.caronte.Adapters.IndicadoresAdapter;
 import com.guma.desarrollo.caronte.AsyncHttpManager.ClientesRepository;
+import com.guma.desarrollo.core.Cliente;
 import com.guma.desarrollo.core.Indicadores;
 import com.guma.desarrollo.caronte.R;
 import com.guma.desarrollo.core.ManagerURI;
@@ -32,6 +36,8 @@ public class TableroActivity extends AppCompatActivity
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
 
     @Override
@@ -51,11 +57,24 @@ public class TableroActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
+
+        CargarClientes(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
+        CargarFacturas(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
 
         List items = new ArrayList();
 
         items.add(new Indicadores(R.drawable.logo, "FACTURADO", "0"));
-        items.add(new Indicadores(R.drawable.logo, "VENTA TOTALES", "0"));
+
+        //Traer Total de Ventas
+        String  Venta[] = ClientesRepository.getVentaTotal(TableroActivity.this);
+        if (Venta.length>0)
+        {
+            items.add(new Indicadores(R.drawable.logo, "VENTA TOTAL", Venta[0]));
+        }
+
+        //items.add(new Indicadores(R.drawable.logo, "VENTA TOTAL", "0"));
         items.add(new Indicadores(R.drawable.logo, "VENTA POR ARTICULO", "0"));
         items.add(new Indicadores(R.drawable.logo, "RECUPERACION DE CARTERA", "0"));
 
@@ -67,9 +86,8 @@ public class TableroActivity extends AppCompatActivity
         {
 
             items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR ITEM", cursor[0]));
-            items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR FACTURA", cursor[0]));
+            items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR FACTURA", cursor[1]));
         }
-
 
         recycler = (RecyclerView) findViewById(R.id.my_recycler_view);
         recycler.setHasFixedSize(true);
@@ -85,10 +103,34 @@ public class TableroActivity extends AppCompatActivity
                     ClientesRepository.getAsyncHttpClientes("F06","0",TableroActivity.this);
                 }else {
                     Toast.makeText(TableroActivity.this, "Sin permiso de internet", Toast.LENGTH_SHORT).show();
-
                 }
             }
         });
+    }
+
+    void CargarClientes(String Vendedor, String Perfil, final Context cnxt)
+    {
+        if (ManagerURI.isOnlinea(TableroActivity.this))
+        {
+            //ClientesRepository.getAsyncHttpClientes("F06","0",TableroActivity.this);
+            ClientesRepository.getAsyncHttpClientes(Vendedor,Perfil,cnxt);
+        }
+        else
+        {
+            Toast.makeText(TableroActivity.this, "Sin permiso de internet", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    void CargarFacturas(String Vendedor, String Perfil, final Context cnxt)
+    {
+        if (ManagerURI.isOnlinea(TableroActivity.this))
+        {
+            ClientesRepository.getAsyncHttpFacturas(Vendedor,Perfil,cnxt);
+        }
+        else
+        {
+            Toast.makeText(TableroActivity.this, "Sin permiso de internet", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

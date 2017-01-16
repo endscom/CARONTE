@@ -33,7 +33,8 @@ public class VentasPorClienteActivity extends AppCompatActivity {
         //setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //toolbar.setTitleTextColor(getResources().getColor(R.color.Blanco));
-        //setTitle("VENTAS POR CLIENTES");
+
+        setTitle("VENTAS POR CLIENTES");
 
         mVentasPorClienteList = (ListView) findViewById(R.id.leads_list_v);
         //mVentasPorClienteAdapter = new VentasPorClientesAdapter(this, ClientesRepository.getInstance(VentasPorClienteActivity.this).getVentasPorcliente());

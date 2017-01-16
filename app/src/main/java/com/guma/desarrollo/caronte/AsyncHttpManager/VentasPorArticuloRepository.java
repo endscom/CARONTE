@@ -49,7 +49,7 @@ public class VentasPorArticuloRepository {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast())
                 {
-                    saveVentasPorArticulo(new VentaPorArticulo(cursor.getString(cursor.getColumnIndex("CODIGO")),cursor.getString(cursor.getColumnIndex("DESCRIPCION")),cursor.getString(cursor.getColumnIndex("TOTAL")),R.drawable.icon));
+                    saveVentasPorArticulo(new VentaPorArticulo(cursor.getString(cursor.getColumnIndex("ARTICULO")),cursor.getString(cursor.getColumnIndex("DESCRIPCION")),cursor.getString(cursor.getColumnIndex("TOTAL")),R.drawable.icon));
                     cursor.moveToNext();
                 }
             }

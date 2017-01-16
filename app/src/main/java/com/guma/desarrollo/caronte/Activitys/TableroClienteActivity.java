@@ -30,6 +30,7 @@ public class TableroClienteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tablero_cliente);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setTitle("CLIENTE: " + "CL0000222");
 
 

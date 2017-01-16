@@ -65,7 +65,7 @@ public class VentasPorclienteRepository {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast())
                 {
-                    saveVentasPorCliente(new VentaPorCliente(cursor.getString(cursor.getColumnIndex("CODIGO")),cursor.getString(cursor.getColumnIndex("NOMBRE")),cursor.getString(cursor.getColumnIndex("TOTAL")),R.drawable.icon));
+                    saveVentasPorCliente(new VentaPorCliente(cursor.getString(cursor.getColumnIndex("CODCLIENTE")),cursor.getString(cursor.getColumnIndex("NOMBRE")),cursor.getString(cursor.getColumnIndex("TOTAL")),R.drawable.icon));
                     cursor.moveToNext();
                 }
             }

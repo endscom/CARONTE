@@ -36,5 +36,9 @@ public class VentasPorArticuloActivity extends AppCompatActivity {
         mVentasPorArticuloList = (ListView) findViewById(R.id.leads_list_a);
         mVentasPorArticuloAdapter = new VentasPorArticuloAdapter(this, VentasPorArticuloRepository.getInstance(VentasPorArticuloActivity.this).getVentasPorArticulo());
         mVentasPorArticuloList.setAdapter(mVentasPorArticuloAdapter);
+
+        setTitle("VENTAS POR ARTICULO");
+
+
     }
 }

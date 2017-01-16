@@ -49,7 +49,9 @@
             android:name=".Activitys.AgendaActivity"
             android:label="@string/title_activity_agenda"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activitys.AgendaCompletaActivity"></activity>
+        <activity android:name=".Activitys.AgendaCompletaActivity" />
+        <activity android:name=".Activitys.VentasPorClienteActivity" />
+        <activity android:name=".Activitys.VentasPorArticuloActivity"></activity>
     </application>
 
 </manifest>

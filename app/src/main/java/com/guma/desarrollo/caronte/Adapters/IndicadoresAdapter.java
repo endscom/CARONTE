@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guma.desarrollo.caronte.Activitys.DetalleTableroActivity;
+import com.guma.desarrollo.caronte.Activitys.VentasPorArticuloActivity;
+import com.guma.desarrollo.caronte.Activitys.VentasPorClienteActivity;
 import com.guma.desarrollo.core.Indicadores;
 import com.guma.desarrollo.caronte.R;
 
@@ -53,10 +55,34 @@ import java.util.List;
         viewHolder.imagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent ints = new Intent(v.getContext(),DetalleTableroActivity.class);
-                ints.putExtra("TITULO",items.get(i).getNombre());
-                /*if ((items.get(i).getNombre()!="PROMEDIO POR ITEM") && (items.get(i).getNombre()!="PROMEDIO POR FACTURA") )*/
-                   v.getContext().startActivity(ints);
+                //PROMEDIO POR FACTURA
+                /*if ((items.get(i).getNombre()!="PROMEDIO POR ITEM") && (items.get(i).getNombre()!="PROMEDIO POR FACTURA") ){
+                    Intent ints = new Intent(v.getContext(),DetalleTableroActivity.class);
+                    ints.putExtra("TITULO",items.get(i).getNombre());
+                    v.getContext().startActivity(ints);
+
+                }
+*/
+                //VENTAS POR ARTICULO
+                if (items.get(i).getNombre()=="VENTAS POR ARTICULO")
+                {
+                    //Intent ints = new Intent(v.getContext(),DetalleTableroActivity.class);
+                    //ints.putExtra("TITULO",items.get(i).getNombre());
+                    //v.getContext().startActivity(ints);
+                    Intent x = new Intent(v.getContext(), VentasPorArticuloActivity.class);
+                    x.putExtra("TITULO",items.get(i).getNombre());
+                    v.getContext().startActivity(x);
+                }
+
+                if (items.get(i).getNombre()=="VENTAS POR CLIENTE")
+                {
+                    //Intent ints = new Intent(v.getContext(),DetalleTableroActivity.class);
+                    //ints.putExtra("TITULO",items.get(i).getNombre());
+                    //v.getContext().startActivity(ints);
+                    Intent x = new Intent(v.getContext(), VentasPorClienteActivity.class);
+                    x.putExtra("TITULO",items.get(i).getNombre());
+                    v.getContext().startActivity(x);
+                }
             }
         });
 

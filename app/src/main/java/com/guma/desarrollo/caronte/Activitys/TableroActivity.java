@@ -65,17 +65,19 @@ public class TableroActivity extends AppCompatActivity
 
         List items = new ArrayList();
 
-        items.add(new Indicadores(R.drawable.logo, "FACTURADO", "0"));
+
 
         //Traer Total de Ventas
         String  Venta[] = ClientesRepository.getVentaTotal(TableroActivity.this);
         if (Venta.length>0)
         {
+            items.add(new Indicadores(R.drawable.logo, "# ITEM FACTURADOS", Venta[2]));
             items.add(new Indicadores(R.drawable.logo, "VENTA TOTAL", Venta[0]));
         }
 
         //items.add(new Indicadores(R.drawable.logo, "VENTA TOTAL", "0"));
-        items.add(new Indicadores(R.drawable.logo, "VENTA POR ARTICULO", "0"));
+        items.add(new Indicadores(R.drawable.logo, "VENTAS POR ARTICULO", ""));
+        items.add(new Indicadores(R.drawable.logo, "VENTAS POR CLIENTE", ""));
         items.add(new Indicadores(R.drawable.logo, "RECUPERACION DE CARTERA", "0"));
 
         String cursor[] = ClientesRepository.getPromedios(TableroActivity.this);

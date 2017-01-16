@@ -11,6 +11,7 @@ import com.guma.desarrollo.caronte.R;
 import com.guma.desarrollo.core.Cliente;
 import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.core.SQLiteHelper;
+import com.guma.desarrollo.core.VentaPorCliente;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -32,6 +33,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class ClientesRepository {
     private HashMap<String, Cliente> clents = new HashMap<>();
+    private HashMap<String, VentaPorCliente> vclents = new HashMap<>();
 
     public static ClientesRepository getInstance(Context ctx) {
         return new ClientesRepository(ctx);
@@ -41,6 +43,9 @@ public class ClientesRepository {
     private void saveLead(Cliente cls) {
         clents.put(cls.getId(), cls);
     }
+
+    public List<VentaPorCliente> getVentasPorcliente()
+    { return new ArrayList<>(vclents.values()); }
 
     public List<Cliente> getClientes() {
         return new ArrayList<>(clents.values());
@@ -136,18 +141,24 @@ public class ClientesRepository {
     public  static String[] getVentaTotal(Context ctx){
         SQLiteDatabase myDataBase = null;
         SQLiteHelper myDbHelper = null;
-        String[] rVentaTotal = new String[2];
+        String[] rVentaTotal = new String[4];
         try
         {
             myDbHelper = new SQLiteHelper(ManagerURI.getDIR_DB(), ctx);
             myDataBase = myDbHelper.getReadableDatabase();
-            Cursor cursor = myDataBase.rawQuery("SELECT d.CODIGO, SUM(d.VENTA) VENTA FROM DETALLE_FACTURA_PUNTOS d GROUP BY d.CODIGO", null);
+          //Cursor cursor = myDataBase.rawQuery("SELECT d.CODIGO, SUM(d.VENTA) VENTA FROM DETALLE_FACTURA_PUNTOS d GROUP BY d.CODIGO", null);
+            Cursor cursor = myDataBase.rawQuery("SELECT d.CODIGO, ROUND(SUM(d.VENTA),2) SUM_VENTA, ROUND(AVG(d.VENTA),2) AVG_VENTA" +
+                                                "       , ROUND(SUM(d.CANTIDAD),2) NUM_ITEM, ROUND(AVG(d.CANTIDAD),2)  AVG_ITEM " +
+                                                "FROM DETALLE_FACTURA_PUNTOS d GROUP BY d.CODIGO;", null);
             if(cursor.getCount() > 0)
             {
                 cursor.moveToFirst();
                 while(!cursor.isAfterLast())
                 {
-                    rVentaTotal[0] = (String) cursor.getString(cursor.getColumnIndex("VENTA"));
+                    rVentaTotal[0] = (String) cursor.getString(cursor.getColumnIndex("SUM_VENTA"));
+                    rVentaTotal[1] = (String) cursor.getString(cursor.getColumnIndex("AVG_VENTA"));
+                    rVentaTotal[2] = (String) cursor.getString(cursor.getColumnIndex("NUM_ITEM"));
+                    rVentaTotal[3] = (String) cursor.getString(cursor.getColumnIndex("AVG_ITEM"));
                     cursor.moveToNext();
                 }
             }
@@ -170,7 +181,7 @@ public class ClientesRepository {
         {
             myDbHelper = new SQLiteHelper(ManagerURI.getDIR_DB(), ctx);
             myDataBase = myDbHelper.getReadableDatabase();
-            Cursor cursor = myDataBase.rawQuery("SELECT * FROM PROMEDIOS", null);
+            Cursor cursor = myDataBase.rawQuery("SELECT VENDEDOR, ROUND(PRM_ART,2) PRM_ART, ROUND(PRM_VTA,2) PRM_VTA FROM PROMEDIOS", null);
             if(cursor.getCount() > 0)
             {
                 cursor.moveToFirst();
@@ -216,9 +227,48 @@ public class ClientesRepository {
         {
             if(myDataBase != null) { myDataBase.close(); }
             if(myDbHelper != null) { myDbHelper.close(); }
+            IndicadoresRepository(ctx);
         }
 
     }
 
+    private void saveVentasPorCliente(VentaPorCliente vcls) {
+//        clents.put(cls.getId(), cls);
+        vclents.put(vcls.getID(), vcls);
+    }
+
+    private void IndicadoresRepository(Context ctx)
+    {
+        SQLiteDatabase mydb = null;
+        SQLiteHelper mydbh = null;
+        try
+        {
+            mydbh = new SQLiteHelper(ManagerURI.getDIR_DB(), ctx);
+            mydb = mydbh.getReadableDatabase();
+            Cursor cursor = mydb.rawQuery("SELECT d.CODIGO, d.CODCLIENTE, c.NOMBRE" +
+                                          ", SUM(d.VENTA) TOTAL " +
+                   "FROM DETALLE_FACTURA_PUNTOS d INNER JOIN CLIENTES c ON d.CODCLIENTE=c.CLIENTE " +
+                   "GROUP BY d.CODIGO, d.CODCLIENTE, c.NOMBRE " +
+                    "ORDER BY c.NOMBRE;", null);
+            if (cursor.getCount()>0)
+            {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast())
+                {
+                    saveVentasPorCliente(new VentaPorCliente(cursor.getString(cursor.getColumnIndex("CODIGO")),cursor.getString(cursor.getColumnIndex("NOMBRE")),cursor.getString(cursor.getColumnIndex("TOTAL")),R.drawable.icon));
+                    cursor.moveToNext();
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if (mydb != null) { mydb.close(); }
+            if (mydbh != null) { mydbh.close(); }
+        }
+    }
 
 }

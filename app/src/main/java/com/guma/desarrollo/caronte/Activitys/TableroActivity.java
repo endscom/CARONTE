@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.guma.desarrollo.caronte.Adapters.IndicadoresAdapter;
 import com.guma.desarrollo.caronte.AsyncHttpManager.ClientesRepository;
+import com.guma.desarrollo.caronte.AsyncHttpManager.NumArticulosPorClienteRepository;
 import com.guma.desarrollo.core.Cliente;
 import com.guma.desarrollo.core.Indicadores;
 import com.guma.desarrollo.caronte.R;
@@ -65,15 +66,16 @@ public class TableroActivity extends AppCompatActivity
 
         List items = new ArrayList();
 
-
-
         //Traer Total de Ventas
         String  Venta[] = ClientesRepository.getVentaTotal(TableroActivity.this);
         if (Venta.length>0)
         {
+            items.add(new Indicadores(R.drawable.logo, "# CLIENTES", Venta[4]));
             items.add(new Indicadores(R.drawable.logo, "# ITEM FACTURADOS", Venta[2]));
+            items.add(new Indicadores(R.drawable.logo, "# ITEMS POR CLIENTE", ""));
             items.add(new Indicadores(R.drawable.logo, "VENTA TOTAL", Venta[0]));
         }
+
 
         //items.add(new Indicadores(R.drawable.logo, "VENTA TOTAL", "0"));
         items.add(new Indicadores(R.drawable.logo, "VENTAS POR ARTICULO", ""));

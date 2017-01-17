@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guma.desarrollo.caronte.Activitys.DetalleTableroActivity;
+import com.guma.desarrollo.caronte.Activitys.NumArticulosPorCliente;
 import com.guma.desarrollo.caronte.Activitys.VentasPorArticuloActivity;
 import com.guma.desarrollo.caronte.Activitys.VentasPorClienteActivity;
 import com.guma.desarrollo.core.Indicadores;
@@ -63,12 +64,18 @@ import java.util.List;
 
                 }
 */
+
+                //NUMERO DE ARTICULOS POR CLIENTE
+                if (items.get(i).getNombre()=="# ITEMS POR CLIENTE")
+                {
+                    Intent x = new Intent(v.getContext(), NumArticulosPorCliente.class);
+                    //x.putExtra("TITULO",items.get(i).getNombre());
+                    v.getContext().startActivity(x);
+                }
+
                 //VENTAS POR ARTICULO
                 if (items.get(i).getNombre()=="VENTAS POR ARTICULO")
                 {
-                    //Intent ints = new Intent(v.getContext(),DetalleTableroActivity.class);
-                    //ints.putExtra("TITULO",items.get(i).getNombre());
-                    //v.getContext().startActivity(ints);
                     Intent x = new Intent(v.getContext(), VentasPorArticuloActivity.class);
                     x.putExtra("TITULO",items.get(i).getNombre());
                     v.getContext().startActivity(x);
@@ -76,9 +83,6 @@ import java.util.List;
 
                 if (items.get(i).getNombre()=="VENTAS POR CLIENTE")
                 {
-                    //Intent ints = new Intent(v.getContext(),DetalleTableroActivity.class);
-                    //ints.putExtra("TITULO",items.get(i).getNombre());
-                    //v.getContext().startActivity(ints);
                     Intent x = new Intent(v.getContext(), VentasPorClienteActivity.class);
                     x.putExtra("TITULO",items.get(i).getNombre());
                     v.getContext().startActivity(x);

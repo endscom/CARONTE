@@ -141,14 +141,14 @@ public class ClientesRepository {
     public  static String[] getVentaTotal(Context ctx){
         SQLiteDatabase myDataBase = null;
         SQLiteHelper myDbHelper = null;
-        String[] rVentaTotal = new String[4];
+        String[] rVentaTotal = new String[5];
         try
         {
             myDbHelper = new SQLiteHelper(ManagerURI.getDIR_DB(), ctx);
             myDataBase = myDbHelper.getReadableDatabase();
           //Cursor cursor = myDataBase.rawQuery("SELECT d.CODIGO, SUM(d.VENTA) VENTA FROM DETALLE_FACTURA_PUNTOS d GROUP BY d.CODIGO", null);
             Cursor cursor = myDataBase.rawQuery("SELECT d.CODIGO, ROUND(SUM(d.VENTA),2) SUM_VENTA, ROUND(AVG(d.VENTA),2) AVG_VENTA" +
-                                                "       , ROUND(SUM(d.CANTIDAD),2) NUM_ITEM, ROUND(AVG(d.CANTIDAD),2)  AVG_ITEM " +
+                                                "       , ROUND(SUM(d.CANTIDAD),2) NUM_ITEM, ROUND(AVG(d.CANTIDAD),2)  AVG_ITEM, COUNT(DISTINCT CODCLIENTE) CLIENTES " +
                                                 "FROM DETALLE_FACTURA_PUNTOS d GROUP BY d.CODIGO;", null);
             if(cursor.getCount() > 0)
             {
@@ -159,6 +159,7 @@ public class ClientesRepository {
                     rVentaTotal[1] = (String) cursor.getString(cursor.getColumnIndex("AVG_VENTA"));
                     rVentaTotal[2] = (String) cursor.getString(cursor.getColumnIndex("NUM_ITEM"));
                     rVentaTotal[3] = (String) cursor.getString(cursor.getColumnIndex("AVG_ITEM"));
+                    rVentaTotal[4] = (String) cursor.getString(cursor.getColumnIndex("CLIENTES"));
                     cursor.moveToNext();
                 }
             }

@@ -50,26 +50,56 @@ public class ClientesRepository {
     public List<Cliente> getClientes() {
         return new ArrayList<>(clents.values());
     }
+    public static void getAsyncHttpPorRecuperar(String Vendedor, String Permiso, final Context cxnt)
+    {
+        AsyncHttpClient getFacturas = new AsyncHttpClient();
+        RequestParams parametros = new RequestParams();
+        parametros.put("V",Vendedor);
+        parametros.put("P",Permiso);
+        getFacturas.get(ManagerURI.getURL_PORRECUPERAR(), parametros, new AsyncHttpResponseHandler() {
+            public ProgressDialog pdialog;
+            @Override
+            public void onStart() {
+                pdialog = ProgressDialog.show(cxnt, "","Procesando. Porfavor Espere...", true);
+            }
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                JSONArray jsonArray = null;
+                try {
+                    jsonArray = new JSONArray(new String(responseBody));
+                    JSONObject joFacturas = (JSONObject) jsonArray.getJSONObject(0).get("PorRecuperar");
+
+                    SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),cxnt,"DELETE FROM CC_CLIENTES");
+                    for (int i=0;i<joFacturas.length();i++)
+                    {
+                        SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,joFacturas.getString("PorRecuperar"+i));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                pdialog.dismiss();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
     public static void getAsyncHttpFacturas(String vendedor, String Permiso, final Context cxnt)
     {
         AsyncHttpClient getFacturas = new AsyncHttpClient();
         RequestParams parametros = new RequestParams();
         parametros.put("V",vendedor);
         parametros.put("P",Permiso);
-
         getFacturas.get(ManagerURI.getURL_FACTURAS(), parametros, new AsyncHttpResponseHandler() {
             public ProgressDialog pdialog;
-
             @Override
             public void onStart() {
                 pdialog = ProgressDialog.show(cxnt, "","Procesando. Porfavor Espere...", true);
             }
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 JSONArray jsonArray = null;
                 try {
-
                     jsonArray = new JSONArray(new String(responseBody));
                     JSONObject joFacturas = (JSONObject) jsonArray.getJSONObject(0).get("FACTURAS");
 
@@ -78,14 +108,6 @@ public class ClientesRepository {
                     {
                         SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,joFacturas.getString("FACTURA"+i));
                     }
-
-
-                    /*INICIO CargarPromedios*/
-                    //SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),cxnt,"DELETE FROM PROMEDIOS");
-                    //String x = jsonArray.getJSONObject(0).getString("PROMEDIOS");
-                    //SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,x);
-                    /*Fin CargarPromedios*/
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -107,16 +129,16 @@ public class ClientesRepository {
             public ProgressDialog pdialog;
             @Override
             public void onStart() { pdialog = ProgressDialog.show(cxnt, "","Procesando. Porfavor Espere...", true); }
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                JSONArray jsonArray = null;
-                try {
-                    jsonArray = new JSONArray(new String(responseBody));
-                    JSONObject joClientes = (JSONObject) jsonArray.getJSONObject(0).get("CLIENTES");
-                    SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),cxnt,"DELETE FROM CLIENTES");
-                    for (int i=0;i<joClientes.length();i++)
-                    {
-                        SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,joClientes.getString("CLIENTES"+i));
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        JSONArray jsonArray = null;
+                        try {
+                            jsonArray = new JSONArray(new String(responseBody));
+                            JSONObject joClientes = (JSONObject) jsonArray.getJSONObject(0).get("CLIENTES");
+                            SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),cxnt,"DELETE FROM CLIENTES");
+                            for (int i=0;i<joClientes.length();i++)
+                            {
+                                SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,joClientes.getString("CLIENTES"+i));
                     }
                     //SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,String.valueOf(jsonArray.getJSONObject(0).get("PROMEDIOS")));
                     /*INICIO CargarPromedios*/
@@ -124,6 +146,12 @@ public class ClientesRepository {
                     String x = jsonArray.getJSONObject(0).getString("PROMEDIOS");
                     SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,x);
                     /*Fin CargarPromedios*/
+
+                    /*INICIO CargarPromedios3*/
+                    SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),cxnt,"DELETE FROM PROMEDIOS3");
+                    String x3 = jsonArray.getJSONObject(0).getString("PROMEDIOS3");
+                    SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,x3);
+                    /*Fin CargarPromedios3*/
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -171,6 +199,37 @@ public class ClientesRepository {
             if(myDbHelper != null) { myDbHelper.close(); }
         }
         return rVentaTotal;
+    }
+
+    public static String[] getPromedios3(Context ctx, String Cliente){
+        SQLiteDatabase myDataBase = null;
+        SQLiteHelper myDbHelper = null;
+        String[] rPromedios3 = new String[4];
+        try
+        {
+            myDbHelper = new SQLiteHelper(ManagerURI.getDIR_DB(), ctx);
+            myDataBase = myDbHelper.getReadableDatabase();
+            Cursor cursor = myDataBase.rawQuery("SELECT p3.NOMBRE, p3.CLIENTE, ROUND(p3.PRM_ART_3, 2) PRM_ART_3, ROUND(p3.PRM_VTA_3,2) PRM_VTA_3 FROM PROMEDIOS3 p3 WHERE CLIENTE='"+Cliente+"';", null);
+            if(cursor.getCount() > 0)
+            {
+                cursor.moveToFirst();
+                while(!cursor.isAfterLast())
+                {
+                    rPromedios3[0] = (String) cursor.getString(cursor.getColumnIndex("NOMBRE"));
+                    rPromedios3[1] = (String) cursor.getString(cursor.getColumnIndex("CLIENTE"));
+                    rPromedios3[2] = (String) cursor.getString(cursor.getColumnIndex("PRM_ART_3"));
+                    rPromedios3[3] = (String) cursor.getString(cursor.getColumnIndex("PRM_VTA_3"));
+                    cursor.moveToNext();
+                }
+            }
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        finally
+        {
+            if(myDataBase != null) { myDataBase.close(); }
+            if(myDbHelper != null) { myDbHelper.close(); }
+        }
+        return rPromedios3;
     }
 
     public  static String[] getPromedios(Context ctx){
@@ -248,9 +307,9 @@ public class ClientesRepository {
             mydb = mydbh.getReadableDatabase();
             Cursor cursor = mydb.rawQuery("SELECT d.CODIGO, d.CODCLIENTE, c.NOMBRE" +
                                           ", SUM(d.VENTA) TOTAL " +
-                   "FROM DETALLE_FACTURA_PUNTOS d INNER JOIN CLIENTES c ON d.CODCLIENTE=c.CLIENTE " +
-                   "GROUP BY d.CODIGO, d.CODCLIENTE, c.NOMBRE " +
-                    "ORDER BY c.NOMBRE;", null);
+                                          "FROM DETALLE_FACTURA_PUNTOS d INNER JOIN CLIENTES c ON d.CODCLIENTE=c.CLIENTE " +
+                                          "GROUP BY d.CODIGO, d.CODCLIENTE, c.NOMBRE " +
+                                          "ORDER BY c.NOMBRE;", null);
             if (cursor.getCount()>0)
             {
                 cursor.moveToFirst();

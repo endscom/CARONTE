@@ -63,6 +63,7 @@ public class TableroActivity extends AppCompatActivity
 
         CargarClientes(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
         CargarFacturas(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
+        CargarPorRecuperar(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
 
         List items = new ArrayList();
 
@@ -137,6 +138,17 @@ public class TableroActivity extends AppCompatActivity
         }
     }
 
+    void CargarPorRecuperar(String Vendedor, String Perfil, final Context cnxt)
+    {
+        if (ManagerURI.isOnlinea(TableroActivity.this))
+        {
+            ClientesRepository.getAsyncHttpPorRecuperar(Vendedor,Perfil,cnxt);
+        }
+        else
+        {
+            Toast.makeText(TableroActivity.this, "Sin permiso de internet", Toast.LENGTH_SHORT).show();
+        }
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

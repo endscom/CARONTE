@@ -9,10 +9,12 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.guma.desarrollo.caronte.Adapters.ClientesAdapter;
+import com.guma.desarrollo.caronte.Adapters.Indicadores3Adapter;
 import com.guma.desarrollo.caronte.Adapters.IndicadoresAdapter;
 import com.guma.desarrollo.caronte.AsyncHttpManager.ClientesRepository;
 import com.guma.desarrollo.core.Indicadores;
 import com.guma.desarrollo.caronte.R;
+import com.guma.desarrollo.core.Indicadores3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,18 +35,15 @@ public class TableroClienteActivity extends AppCompatActivity {
 
         setTitle("CLIENTE: " + "CL0000222");
 
-
         recycler = (RecyclerView) findViewById(R.id.rv_detalle_cliente);
         mClienteList = (ListView) findViewById(R.id.list_producto_facturado);
         recycler.setHasFixedSize(true);
         lManager = new LinearLayoutManager(this);
         recycler.setLayoutManager(lManager);
         infoCliente();
-
-
     }
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+       switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
@@ -63,7 +62,9 @@ public class TableroClienteActivity extends AppCompatActivity {
             infoCliente();
         }
         return super.onOptionsItemSelected(item);
+
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_detalle_tablero, menu);
         return true;
@@ -74,14 +75,27 @@ public class TableroClienteActivity extends AppCompatActivity {
         mClienteList.setAdapter(mClientesAdapter);
     }
     private void infoCliente(){
+        String cursor[] = ClientesRepository.getPromedios3(TableroClienteActivity.this, "00003");
         List items = new ArrayList();
-        items.add(new Indicadores(R.drawable.logo, "VENTAS AL VALOR", "0"));
-        items.add(new Indicadores(R.drawable.logo, "ITEM FACTURADO", "0"));
-        items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR FACTURA", "0"));
-        items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR ITEM FACTURADO", "0"));
-        adapter = new IndicadoresAdapter(items);
+        if(cursor.length > 0)
+        {
+            items.add(new Indicadores3(R.drawable.logo, "VENTA EN VALORES", "Promedio: ".concat(cursor[3]), "Meta: 0", "Actual: 0", "Pendiente: 0"));
+            items.add(new Indicadores3(R.drawable.logo, "PROMEDIO DE ITEMS FACTURADOS", "Promedio: ".concat(cursor[2]), "Meta: 0", "Actual: 0", "Pendiente: 0"));
+
+            //items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR ITEM", cursor[0]));
+            //items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR FACTURA", cursor[1]));
+        }
+
+        items.add(new Indicadores3(R.drawable.logo, "", "MONTO POR FACTURA", "0", "", ""));
+        items.add(new Indicadores3(R.drawable.logo, "", "PROMEDIO DE ITEM POR FACTURA", "0", "", ""));
+        /*items.add(new Indicadores(R.drawable.logo, "promedio", "0"));
+        items.add(new Indicadores(R.drawable.logo, "# DE ITEMS FACTURADO", "0"));
+        items.add(new Indicadores(R.drawable.logo, "MONTO POR FACTURA", "0"));
+        items.add(new Indicadores(R.drawable.logo, "PROMEDIO DE ITEM POR FACTURA", "0"));*/
+        adapter = new Indicadores3Adapter(items);
         recycler.setAdapter(adapter);
     }
+
     private void recuperacion(){
         List items = new ArrayList();
         items.add(new Indicadores(R.drawable.logo, "META", "0"));
@@ -96,4 +110,5 @@ public class TableroClienteActivity extends AppCompatActivity {
         adapter = new IndicadoresAdapter(items);
         recycler.setAdapter(adapter);
     }
+
 }

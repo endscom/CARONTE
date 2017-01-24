@@ -18,6 +18,7 @@ import com.bumptech.glide.util.Util;
 import com.guma.desarrollo.caronte.AsyncHttpManager.Usuarios;
 import com.guma.desarrollo.caronte.R;
 import com.guma.desarrollo.core.ManagerURI;
+import com.guma.desarrollo.core.SQLiteHelper;
 import com.guma.desarrollo.core.Usuario;
 
 public class LoginActivity extends AppCompatActivity {
@@ -40,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String vUsuario = mAgente.getText().toString().trim();
                 String vPassword = mPassword.getText().toString().trim();
+
                 if (TextUtils.isEmpty(vUsuario) || TextUtils.isEmpty(vPassword)){
                     Toast.makeText(LoginActivity.this, "Hay Campos Vacios", Toast.LENGTH_SHORT).show();
                 }else{

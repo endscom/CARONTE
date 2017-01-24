@@ -13,8 +13,9 @@ import java.io.File;
 
 public class ManagerURI {
     //private static String SERVER = "192.168.1.78";
-    //private static String SERVER = "165.98.75.219:8448";
-    private static String SERVER = "192.168.1.155:8080";
+    private static String SERVER = "165.98.75.219:8448";/*IP PUBLICO*/
+    //private static String SERVER = "192.168.1.155:8080";/*LOCAL LP*/
+
     private static String URL_CLENTES= "http://"+ SERVER + "/rest_app_venta/CLIENTES.php";
     private static String URL_VENDEDOR="http://"+ SERVER + "/rest_app_venta/VENDEDORES.php";
     private static String URL_FACTURAS="http://"+ SERVER + "/rest_app_venta/FACTURAS.php";

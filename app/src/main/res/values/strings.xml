@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Caronte</string>
+    <string name="app_name">App Ventas</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Agente</string>
@@ -25,7 +25,7 @@
     <string name="action_producto_facturado">Producto de Facturado</string>
     <string name="action_recuperacion_efectivo">Recuperacion de Efectivo</string>
     <string name="action_info_cliente">Info. Cliente</string>
-    <string name="copy_right_1">Copyright © 2016, UNIMARK S.A.</string>
+    <string name="copy_right_1">Copyright © 2017, UNIMARK S.A.</string>
     <string name="copy_right_2">v1.1.0</string>
     <string name="act_Clientes">Clientes</string>
     <string name="act_plan_trabajo">Plan de Trabajo</string>

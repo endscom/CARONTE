@@ -26,6 +26,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class NumArticulosPorClienteRepository {
     private HashMap<String, NumArticuloPorCliente> vclents = new HashMap<>();
 
     private void saveNumArticuloPorCliente(NumArticuloPorCliente vcls){
+
         vclents.put(vcls.getmID(), vcls);
     }
 
@@ -49,9 +51,9 @@ public class NumArticulosPorClienteRepository {
         {
             mydbh = new SQLiteHelper(ManagerURI.getDIR_DB(), ctx);
             mydb = mydbh.getReadableDatabase();
-            Cursor cursor = mydb.rawQuery("SELECT d.CODCLIENTE, c.NOMBRE, SUM(CANTIDAD) ARTICULOS " +
+            Cursor cursor = mydb.rawQuery("SELECT d.CODCLIENTE, c.NOMBRE, COUNT(DISTINCT ARTICULO) ARTICULOS " +
                    "FROM DETALLE_FACTURA_PUNTOS d INNER JOIN CLIENTES c ON d.CODCLIENTE=c.CLIENTE " +
-                   "GROUP BY d.CODCLIENTE ORDER BY d.CODCLIENTE, c.NOMBRE;", null);
+                   "GROUP BY d.CODCLIENTE ORDER BY 3 DESC, d.CODCLIENTE, c.NOMBRE;", null);
             if (cursor.getCount()>0)
             {
                 cursor.moveToFirst();
@@ -79,6 +81,7 @@ public class NumArticulosPorClienteRepository {
     }
 
     public List<NumArticuloPorCliente> getNumArticulosPorCliente(){
+        //return new ArrayList<>(vclents.values());
         return new ArrayList<>(vclents.values());
     }
 }

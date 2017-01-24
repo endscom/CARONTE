@@ -5,7 +5,7 @@ import java.util.UUID;
  * Created by luis.perez on 17/01/2017.
  */
 
-public class NumArticuloPorCliente {
+public class NumArticuloPorCliente implements Comparable<NumArticuloPorCliente> {
     private String mID;
     private String mCODCLIETE;
     private String mNOMBRE;
@@ -18,6 +18,20 @@ public class NumArticuloPorCliente {
         mNOMBRE = nombre;
         mARTICULOS = articulos;
         mImage = Image;
+    }
+
+    @Override
+    public int compareTo(NumArticuloPorCliente o)
+    {
+        /*if (Integer.parseInt(mARTICULOS)< Integer.parseInt(o.mARTICULOS))
+        { return -1;}
+        if (Integer.parseInt(mARTICULOS)< Integer.parseInt(o.mARTICULOS))
+        {return 1; }
+        return 0;
+        */
+        String a = new String (String.valueOf(this.getmARTICULOS()));
+        String b = new String (String.valueOf(this.getmARTICULOS()));
+        return a.compareTo(b);
     }
 
     public String getmID() {

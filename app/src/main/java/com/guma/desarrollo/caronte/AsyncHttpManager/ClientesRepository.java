@@ -178,11 +178,13 @@ public class ClientesRepository {
             Cursor cursor = myDataBase.rawQuery("SELECT d.CODIGO, ROUND(SUM(d.VENTA),2) SUM_VENTA, ROUND(AVG(d.VENTA),2) AVG_VENTA" +
                                                 "       , ROUND(SUM(d.CANTIDAD),2) NUM_ITEM, ROUND(AVG(d.CANTIDAD),2)  AVG_ITEM, COUNT(DISTINCT CODCLIENTE) CLIENTES " +
                                                 "FROM DETALLE_FACTURA_PUNTOS d GROUP BY d.CODIGO;", null);
+            Log.d("", "getVentaTotal: QUE PEDO");
             if(cursor.getCount() > 0)
             {
                 cursor.moveToFirst();
                 while(!cursor.isAfterLast())
                 {
+
                     rVentaTotal[0] = (String) cursor.getString(cursor.getColumnIndex("SUM_VENTA"));
                     rVentaTotal[1] = (String) cursor.getString(cursor.getColumnIndex("AVG_VENTA"));
                     rVentaTotal[2] = (String) cursor.getString(cursor.getColumnIndex("NUM_ITEM"));

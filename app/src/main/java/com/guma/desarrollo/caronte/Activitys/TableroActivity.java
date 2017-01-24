@@ -60,9 +60,12 @@ public class TableroActivity extends AppCompatActivity
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
-
+/*
         CargarClientes(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
         CargarFacturas(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
+*/
+        CargarClientes("F06","0",TableroActivity.this);
+        CargarFacturas("F06","0",TableroActivity.this);
         //CargarPorRecuperar(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
 
         List items = new ArrayList();

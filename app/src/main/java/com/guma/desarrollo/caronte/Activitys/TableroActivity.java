@@ -66,6 +66,7 @@ public class TableroActivity extends AppCompatActivity
 */
         CargarClientes("F06","0",TableroActivity.this);
         CargarFacturas("F06","0",TableroActivity.this);
+        CargarFacturasIndicadores("F06","0",TableroActivity.this);
         //CargarPorRecuperar(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
 
         List items = new ArrayList();
@@ -129,6 +130,17 @@ public class TableroActivity extends AppCompatActivity
         }
     }
 
+    void CargarFacturasIndicadores(String Vendedor, String Perfil, final Context cnxt)
+    {
+        if (ManagerURI.isOnlinea(TableroActivity.this))
+        {
+            ClientesRepository.getAsyncHttpFacturasIndicadores(Vendedor, Perfil , cnxt);
+        }
+        else
+        {
+            Toast.makeText(TableroActivity.this, "Sin Permiso de Internet", Toast.LENGTH_SHORT).show();
+        }
+    }
     void CargarFacturas(String Vendedor, String Perfil, final Context cnxt)
     {
         if (ManagerURI.isOnlinea(TableroActivity.this))
@@ -140,7 +152,6 @@ public class TableroActivity extends AppCompatActivity
             Toast.makeText(TableroActivity.this, "Sin permiso de internet", Toast.LENGTH_SHORT).show();
         }
     }
-
     void CargarPorRecuperar(String Vendedor, String Perfil, final Context cnxt)
     {
         if (ManagerURI.isOnlinea(TableroActivity.this))
@@ -161,13 +172,11 @@ public class TableroActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.tablero, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -177,7 +186,6 @@ public class TableroActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

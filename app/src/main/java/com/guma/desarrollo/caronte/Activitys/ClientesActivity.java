@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.guma.desarrollo.caronte.Adapters.ClientesAdapter;
 import com.guma.desarrollo.caronte.AsyncHttpManager.ClientesRepository;
 import com.guma.desarrollo.caronte.R;
+import com.guma.desarrollo.core.Cliente;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 public class ClientesActivity extends AppCompatActivity {
@@ -31,17 +32,23 @@ public class ClientesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitleTextColor(getResources().getColor(R.color.Blanco));
 
-
         setTitle("LISTA DE CLIENTES");
-
         mClienteList = (ListView) findViewById(R.id.leads_list);
         mClientesAdapter = new ClientesAdapter(this, ClientesRepository.getInstance(ClientesActivity.this).getClientes());
         mClienteList.setAdapter(mClientesAdapter);
-
         mClienteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(ClientesActivity.this,TableroClienteActivity.class));
+                Cliente a, b, c;
+                a = (Cliente) parent.getItemAtPosition(position);
+                //parent.getItemAtPosition(position).toString();
+
+                Intent intent = new Intent(ClientesActivity.this,TableroClienteActivity.class);
+                //startActivity(new Intent(ClientesActivity.this,TableroClienteActivity.class));
+                intent.putExtra("CodCliente",a.getTitle());
+                intent.putExtra("NombreCliente",a.getName());
+                startActivity(intent);
+
             }
         });
 

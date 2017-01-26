@@ -3,7 +3,6 @@ package com.guma.desarrollo.caronte.Activitys;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,11 +21,12 @@ import android.widget.Toast;
 
 import com.guma.desarrollo.caronte.Adapters.IndicadoresAdapter;
 import com.guma.desarrollo.caronte.AsyncHttpManager.ClientesRepository;
-import com.guma.desarrollo.caronte.AsyncHttpManager.NumArticulosPorClienteRepository;
-import com.guma.desarrollo.core.Cliente;
+import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.Indicadores;
 import com.guma.desarrollo.caronte.R;
+import com.guma.desarrollo.caronte.AsyncHttpManager.LOG;
 import com.guma.desarrollo.core.ManagerURI;
+import com.guma.desarrollo.core.SQLiteHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,12 +60,17 @@ public class TableroActivity extends AppCompatActivity
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
+
+
+
+
+
 /*
         CargarClientes(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
         CargarFacturas(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
 */
-        CargarClientes("F06","0",TableroActivity.this);
-        CargarFacturas("F06","0",TableroActivity.this);
+       // CargarClientes("F06","0",TableroActivity.this);
+       // CargarFacturas("F06","0",TableroActivity.this);
         //CargarPorRecuperar(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
 
         List items = new ArrayList();
@@ -109,6 +114,7 @@ public class TableroActivity extends AppCompatActivity
             public void onClick(View v) {
                 if (ManagerURI.isOnlinea(TableroActivity.this)){
                     ClientesRepository.getAsyncHttpClientes("F06","0",TableroActivity.this);
+                    LOG.AsyncServidor(TableroActivity.this);
                 }else {
                     Toast.makeText(TableroActivity.this, "Sin permiso de internet", Toast.LENGTH_SHORT).show();
                 }
@@ -166,6 +172,18 @@ public class TableroActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.tablero, menu);
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+       SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),this,"INSERT INTO LOG VALUES ('" + preferences.getString("User","") + "', '" + Clock.getTimeStamp() + "', 'MenuPrincipal', 'OUT')");
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),this,"INSERT INTO LOG VALUES ('" + preferences.getString("User","") + "', '" + Clock.getTimeStamp() + "', 'MenuPrincipal', 'IN')");
+        super.onResume();
     }
 
     @Override

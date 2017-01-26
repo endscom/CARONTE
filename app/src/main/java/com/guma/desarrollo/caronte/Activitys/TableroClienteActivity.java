@@ -1,5 +1,7 @@
 package com.guma.desarrollo.caronte.Activitys;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,14 +9,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.guma.desarrollo.caronte.Adapters.ClientesAdapter;
 import com.guma.desarrollo.caronte.Adapters.Indicadores3Adapter;
 import com.guma.desarrollo.caronte.Adapters.IndicadoresAdapter;
 import com.guma.desarrollo.caronte.AsyncHttpManager.ClientesRepository;
+import com.guma.desarrollo.core.Clock;
 import com.guma.desarrollo.core.Indicadores;
 import com.guma.desarrollo.caronte.R;
 import com.guma.desarrollo.core.Indicadores3;
+import com.guma.desarrollo.core.ManagerURI;
+import com.guma.desarrollo.core.SQLiteHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +32,17 @@ public class TableroClienteActivity extends AppCompatActivity {
 
     ListView mClienteList;
     ClientesAdapter mClientesAdapter;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tablero_cliente);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
 
         setTitle("CLIENTE: " + "CL0000222");
 
@@ -41,6 +52,17 @@ public class TableroClienteActivity extends AppCompatActivity {
         lManager = new LinearLayoutManager(this);
         recycler.setLayoutManager(lManager);
         infoCliente();
+    }
+    @Override
+    protected void onPause() {
+        SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),this,"INSERT INTO LOG VALUES ('" + preferences.getString("User","") + "', '" + Clock.getTimeStamp() + "', 'IndicadoresCliente', 'OUT')");
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),this,"INSERT INTO LOG VALUES ('" + preferences.getString("User","") + "', '" + Clock.getTimeStamp() + "', 'IndicadoresCliente', 'IN')");
+        super.onResume();
     }
     public boolean onOptionsItemSelected(MenuItem item) {
        switch (item.getItemId()) {

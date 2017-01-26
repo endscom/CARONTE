@@ -22,6 +22,8 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,6 +34,7 @@ import cz.msebera.android.httpclient.Header;
  */
 
 public class ClientesRepository {
+    private static final String TAG = "ClientesRepository";
     private HashMap<String, Cliente> clents = new HashMap<>();
     private HashMap<String, VentaPorCliente> vclents = new HashMap<>();
 
@@ -48,7 +51,14 @@ public class ClientesRepository {
     { return new ArrayList<>(vclents.values()); }
 
     public List<Cliente> getClientes() {
-        return new ArrayList<>(clents.values());
+        List<Cliente> OrderClient= new ArrayList<>(clents.values());
+        Collections.sort(OrderClient, new Comparator<Cliente>(){
+            public int compare(Cliente obj1, Cliente obj2)
+            {
+                return obj1.getName().compareToIgnoreCase(obj2.getName());
+            }
+        });
+        return OrderClient;
     }
     public static void getAsyncHttpPorRecuperar(String Vendedor, String Permiso, final Context cxnt)
     {
@@ -178,7 +188,7 @@ public class ClientesRepository {
             Cursor cursor = myDataBase.rawQuery("SELECT d.CODIGO, ROUND(SUM(d.VENTA),2) SUM_VENTA, ROUND(AVG(d.VENTA),2) AVG_VENTA" +
                                                 "       , ROUND(COUNT(DISTINCT d.ARTICULO),2) NUM_ITEM, ROUND(AVG(d.CANTIDAD),2)  AVG_ITEM, COUNT(DISTINCT CODCLIENTE) CLIENTES " +
                                                 "FROM DETALLE_FACTURA_PUNTOS d GROUP BY d.CODIGO;", null);
-            Log.d("", "getVentaTotal: QUE PEDO");
+
             if(cursor.getCount() > 0)
             {
                 cursor.moveToFirst();

@@ -94,6 +94,40 @@ public class ClientesRepository {
             }
         });
     }
+    public static void getAsyncHttpFacturasIndicadores(String vendedor, String Permiso, final Context cxnt)
+    {
+        AsyncHttpClient getFacturas = new AsyncHttpClient();
+        RequestParams parametros = new RequestParams();
+        parametros.put("V",vendedor);
+        parametros.put("P",Permiso);
+        getFacturas.get(ManagerURI.getURL_FACTURASINDICADORES(), parametros, new AsyncHttpResponseHandler() {
+            public ProgressDialog pdialog;
+            @Override
+            public void onStart() {
+                pdialog = ProgressDialog.show(cxnt, "","Procesando. Porfavor Espere...", true);
+            }
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                JSONArray jsonArray = null;
+                try {
+                    jsonArray = new JSONArray(new String(responseBody));
+                    JSONObject joFacturas = (JSONObject) jsonArray.getJSONObject(0).get("FACTURASINDICADORES");
+
+                    SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),cxnt,"DELETE FROM INDICADORES3");
+                    for (int i=0;i<joFacturas.length();i++)
+                    {
+                        SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,joFacturas.getString("FACTURASINDICADORES"+i));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                pdialog.dismiss();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
     public static void getAsyncHttpFacturas(String vendedor, String Permiso, final Context cxnt)
     {
         AsyncHttpClient getFacturas = new AsyncHttpClient();
@@ -213,7 +247,7 @@ public class ClientesRepository {
         return rVentaTotal;
     }
 
-    public static String[] getPromedios3(Context ctx, String Cliente){
+    public static String[] getPromedios3(Context ctx, String CodCliente, String NombreCliente){
         SQLiteDatabase myDataBase = null;
         SQLiteHelper myDbHelper = null;
         String[] rPromedios3 = new String[4];
@@ -221,16 +255,17 @@ public class ClientesRepository {
         {
             myDbHelper = new SQLiteHelper(ManagerURI.getDIR_DB(), ctx);
             myDataBase = myDbHelper.getReadableDatabase();
-            Cursor cursor = myDataBase.rawQuery("SELECT p3.NOMBRE, p3.CLIENTE, ROUND(p3.PRM_ART_3, 2) PRM_ART_3, ROUND(p3.PRM_VTA_3,2) PRM_VTA_3 FROM PROMEDIOS3 p3 WHERE CLIENTE='"+Cliente+"';", null);
+            //Cursor cursor = myDataBase.rawQuery("SELECT p3.NOMBRECLIENTE, p3.CLIENTE, ROUND(p3.PRM_ART_3,2) PRM_ART_3, ROUND(p3.PRM_VTA_3,2) PRM_VTA_3 FROM PROMEDIOS3 p3 WHERE CLIENTE='"+CodCliente+"';", null);
+            Cursor cursor = myDataBase.rawQuery("SELECT ROUND(i.VENTAS_3,4) VENTAS, i.NUM_ART_FAC, ROUND(i.PROMEDIO_ART,4) PROMEDIO_ART, ROUND(i.MontoPromXFac,4) MontoPromXFac FROM INDICADORES3 i WHERE i.CODCLIENTE='"+CodCliente+"';", null);
             if(cursor.getCount() > 0)
             {
                 cursor.moveToFirst();
                 while(!cursor.isAfterLast())
                 {
-                    rPromedios3[0] = (String) cursor.getString(cursor.getColumnIndex("NOMBRE"));
-                    rPromedios3[1] = (String) cursor.getString(cursor.getColumnIndex("CLIENTE"));
-                    rPromedios3[2] = (String) cursor.getString(cursor.getColumnIndex("PRM_ART_3"));
-                    rPromedios3[3] = (String) cursor.getString(cursor.getColumnIndex("PRM_VTA_3"));
+                    rPromedios3[0] = (String) (cursor.isNull(0)? CodCliente: cursor.getString(cursor.getColumnIndex("VENTAS")));
+                    rPromedios3[1] = (String) (cursor.isNull(1)? "": cursor.getString(cursor.getColumnIndex("NUM_ART_FAC")));
+                    rPromedios3[2] = (String) (cursor.isNull(2)? "0.00": cursor.getString(cursor.getColumnIndex("PROMEDIO_ART")));
+                    rPromedios3[3] = (String) (cursor.isNull(3)? "0.00": cursor.getString(cursor.getColumnIndex("MontoPromXFac")));
                     cursor.moveToNext();
                 }
             }

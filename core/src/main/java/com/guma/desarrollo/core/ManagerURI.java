@@ -12,14 +12,15 @@ import java.io.File;
  */
 
 public class ManagerURI {
-    private static String SERVER = "192.168.1.78";
-    //private static String SERVER = "165.98.75.219:8448";/*IP PUBLICO*/
+    //private static String SERVER = "192.168.1.78";
+    private static String SERVER = "165.98.75.219:8448";/*IP PUBLICO*/
     //private static String SERVER = "192.168.1.155:8080";/*LOCAL LP*/
 
     private static String URL_CLENTES= "http://"+ SERVER + "/rest_app_venta/CLIENTES.php";
     private static String URL_VENDEDOR="http://"+ SERVER + "/rest_app_venta/VENDEDORES.php";
     private static String URL_FACTURAS="http://"+ SERVER + "/rest_app_venta/FACTURAS.php";
     private static String URL_PORRECUPERAR="http://"+ SERVER + "/rest_app_venta/PorRecuperar.php";
+    private static String URL_FACTURASINDICADORES3="http://"+ SERVER + "/rest_app_venta/FACTURASINDICADORES.php";
 
     private static String URL_ExecuteSQL="http://"+ SERVER + "/rest_app_venta/ExecuteSQL.php";
 
@@ -29,6 +30,8 @@ public class ManagerURI {
     public static String getURL_CLENTES() { return URL_CLENTES; }
 
     public static String getURL_FACTURAS() { return URL_FACTURAS; }
+
+    public static String getURL_FACTURASINDICADORES() { return URL_FACTURASINDICADORES3; }
 
     public static String getURL_PORRECUPERAR() { return URL_PORRECUPERAR; }
 

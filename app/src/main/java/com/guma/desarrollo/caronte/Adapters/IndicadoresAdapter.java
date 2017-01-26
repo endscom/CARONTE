@@ -64,7 +64,6 @@ import java.util.List;
 
                 }
 */
-
                 //NUMERO DE ARTICULOS POR CLIENTE
                 if (items.get(i).getNombre()=="# ITEMS POR CLIENTE")
                 {
@@ -72,7 +71,6 @@ import java.util.List;
                     //x.putExtra("TITULO",items.get(i).getNombre());
                     v.getContext().startActivity(x);
                 }
-
                 //VENTAS POR ARTICULO
                 if (items.get(i).getNombre()=="VENTAS POR ARTICULO")
                 {
@@ -80,7 +78,6 @@ import java.util.List;
                     x.putExtra("TITULO",items.get(i).getNombre());
                     v.getContext().startActivity(x);
                 }
-
                 if (items.get(i).getNombre()=="VENTAS POR CLIENTE")
                 {
                     Intent x = new Intent(v.getContext(), VentasPorClienteActivity.class);

@@ -30,6 +30,8 @@ public class TableroClienteActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
 
+    private String CodCliente="", NombreCliente="";
+
     ListView mClienteList;
     ClientesAdapter mClientesAdapter;
     private SharedPreferences preferences;
@@ -44,14 +46,18 @@ public class TableroClienteActivity extends AppCompatActivity {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
 
-        setTitle("CLIENTE: " + "CL0000222");
+        Bundle bundle = getIntent().getExtras();
+        CodCliente = bundle.get("CodCliente").toString();
+        NombreCliente = bundle.get("NombreCliente").toString();
+
+        setTitle("CLIENTE: " + bundle.get("CodCliente") + " - " + bundle.get("NombreCliente"));
 
         recycler = (RecyclerView) findViewById(R.id.rv_detalle_cliente);
         mClienteList = (ListView) findViewById(R.id.list_producto_facturado);
         recycler.setHasFixedSize(true);
         lManager = new LinearLayoutManager(this);
         recycler.setLayoutManager(lManager);
-        infoCliente();
+        infoCliente(CodCliente);
     }
     @Override
     protected void onPause() {
@@ -81,7 +87,7 @@ public class TableroClienteActivity extends AppCompatActivity {
         } else if (id == R.id.action_cuota_venta) {
             cuotaVenta();
         } else if (id == R.id.action_info_cliente) {
-            infoCliente();
+            infoCliente(CodCliente);
         }
         return super.onOptionsItemSelected(item);
 
@@ -96,28 +102,27 @@ public class TableroClienteActivity extends AppCompatActivity {
         mClientesAdapter = new ClientesAdapter(this, ClientesRepository.getInstance(TableroClienteActivity.this).getClientes());
         mClienteList.setAdapter(mClientesAdapter);
     }
-    private void infoCliente(){
-        String cursor[] = ClientesRepository.getPromedios3(TableroClienteActivity.this, "00003");
+    private void infoCliente(String CodCliente){
+        //String cursor[] = ClientesRepository.getPromedios3(TableroClienteActivity.this, "00003");
+        String cursor[] = ClientesRepository.getPromedios3(TableroClienteActivity.this, CodCliente, NombreCliente);
         List items = new ArrayList();
         if(cursor.length > 0)
         {
-            items.add(new Indicadores3(R.drawable.logo, "VENTA EN VALORES", "Promedio: ".concat(cursor[3]), "Meta: 0", "Actual: 0", "Pendiente: 0"));
-            items.add(new Indicadores3(R.drawable.logo, "PROMEDIO DE ITEMS FACTURADOS", "Promedio: ".concat(cursor[2]), "Meta: 0", "Actual: 0", "Pendiente: 0"));
-
-            //items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR ITEM", cursor[0]));
-            //items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR FACTURA", cursor[1]));
+            items.add(new Indicadores3(R.drawable.logo, "VENTA EN VALORES", "Promedio: ".concat(cursor[0]==null?"0.00":cursor[0]), "Meta: 0", "Actual: 0", "Pendiente: 0"));
+            items.add(new Indicadores3(R.drawable.logo, "PROMEDIO DE ITEMS FACTURADOS", "Promedio: ".concat(cursor[1]==null?"0":cursor[1]), "Meta: 0", "Actual: 0", "Pendiente: 0"));
+            items.add(new Indicadores3(R.drawable.logo, "MONTO POR FACTURA", "Promedio: ".concat(cursor[3]==null?"0":cursor[3]), "Meta: 0", "Actual: 0", "Pendiente: 0"));
+            items.add(new Indicadores3(R.drawable.logo, "PROMEDIO DE ITEMS POR FACTURA", "Promedio: ".concat(cursor[2]==null?"0":cursor[2 ]), "Meta: 0", "Actual: 0", "Pendiente: 0"));
         }
 
-        items.add(new Indicadores3(R.drawable.logo, "", "MONTO POR FACTURA", "0", "", ""));
+        /*items.add(new Indicadores3(R.drawable.logo, "", "MONTO POR FACTURA", "0", "", ""));
         items.add(new Indicadores3(R.drawable.logo, "", "PROMEDIO DE ITEM POR FACTURA", "0", "", ""));
-        /*items.add(new Indicadores(R.drawable.logo, "promedio", "0"));
+        items.add(new Indicadores(R.drawable.logo, "promedio", "0"));
         items.add(new Indicadores(R.drawable.logo, "# DE ITEMS FACTURADO", "0"));
         items.add(new Indicadores(R.drawable.logo, "MONTO POR FACTURA", "0"));
         items.add(new Indicadores(R.drawable.logo, "PROMEDIO DE ITEM POR FACTURA", "0"));*/
         adapter = new Indicadores3Adapter(items);
         recycler.setAdapter(adapter);
     }
-
     private void recuperacion(){
         List items = new ArrayList();
         items.add(new Indicadores(R.drawable.logo, "META", "0"));

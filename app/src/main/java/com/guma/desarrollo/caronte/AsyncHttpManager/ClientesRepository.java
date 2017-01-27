@@ -101,12 +101,12 @@ public class ClientesRepository {
                 JSONArray jsonArray = null;
                 try {
                     jsonArray = new JSONArray(new String(responseBody));
-                    JSONObject joFacturas = (JSONObject) jsonArray.getJSONObject(0).get("FACTURASINDICADORES");
+                    JSONObject joFacturas = (JSONObject) jsonArray.getJSONObject(0).get("INDICADORESCONSOLIDADOS");
 
                     SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),cxnt,"DELETE FROM INDICADORES3");
                     for (int i=0;i<joFacturas.length();i++)
                     {
-                        SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,joFacturas.getString("FACTURASINDICADORES"+i));
+                        SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,joFacturas.getString("INDICADORESCONSOLIDADOS"+i));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -240,22 +240,26 @@ public class ClientesRepository {
     public static String[] getPromedios3(Context ctx, String CodCliente, String NombreCliente){
         SQLiteDatabase myDataBase = null;
         SQLiteHelper myDbHelper = null;
-        String[] rPromedios3 = new String[4];
+        String[] rPromedios3 = new String[8];
         try
         {
             myDbHelper = new SQLiteHelper(ManagerURI.getDIR_DB(), ctx);
             myDataBase = myDbHelper.getReadableDatabase();
             //Cursor cursor = myDataBase.rawQuery("SELECT p3.NOMBRECLIENTE, p3.CLIENTE, ROUND(p3.PRM_ART_3,2) PRM_ART_3, ROUND(p3.PRM_VTA_3,2) PRM_VTA_3 FROM PROMEDIOS3 p3 WHERE CLIENTE='"+CodCliente+"';", null);
-            Cursor cursor = myDataBase.rawQuery("SELECT ROUND(i.VENTAS_3,4) VENTAS, i.NUM_ART_FAC, ROUND(i.PROMEDIO_ART,4) PROMEDIO_ART, ROUND(i.MontoPromXFac,4) MontoPromXFac FROM INDICADORES3 i WHERE i.CODCLIENTE='"+CodCliente+"';", null);
+            Cursor cursor = myDataBase.rawQuery("SELECT ROUND(i.VENTAS_3,4) VENTAS_3, i.NUM_ART_FAC_3, ROUND(i.PROMEDIO_ART_3,4) PROMEDIO_ART_3, ROUND(i.MontoPromXFac_3,4) MontoPromXFac_3, ROUND(i.VENTAS_Act,4) VENTAS_Act, i.NUM_ART_FAC_Act, ROUND(i.PROMEDIO_ART_ACT,4) PROMEDIO_ART_ACT, ROUND(i.MontoPromXFactAct,4) MontoPromXFactAct FROM INDICADORES3 i WHERE i.CODCLIENTE='"+CodCliente+"';", null);
             if(cursor.getCount() > 0)
             {
                 cursor.moveToFirst();
                 while(!cursor.isAfterLast())
                 {
-                    rPromedios3[0] = (String) (cursor.isNull(0)? CodCliente: cursor.getString(cursor.getColumnIndex("VENTAS")));
-                    rPromedios3[1] = (String) (cursor.isNull(1)? "": cursor.getString(cursor.getColumnIndex("NUM_ART_FAC")));
-                    rPromedios3[2] = (String) (cursor.isNull(2)? "0.00": cursor.getString(cursor.getColumnIndex("PROMEDIO_ART")));
-                    rPromedios3[3] = (String) (cursor.isNull(3)? "0.00": cursor.getString(cursor.getColumnIndex("MontoPromXFac")));
+                    rPromedios3[0] = (String) (cursor.isNull(0)? CodCliente: cursor.getString(cursor.getColumnIndex("VENTAS_3")));
+                    rPromedios3[1] = (String) (cursor.isNull(1)? "": cursor.getString(cursor.getColumnIndex("NUM_ART_FAC_3")));
+                    rPromedios3[2] = (String) (cursor.isNull(2)? "0.00": cursor.getString(cursor.getColumnIndex("PROMEDIO_ART_3")));
+                    rPromedios3[3] = (String) (cursor.isNull(3)? "0.00": cursor.getString(cursor.getColumnIndex("MontoPromXFac_3")));
+                    rPromedios3[4] = (String) (cursor.isNull(4)? CodCliente: cursor.getString(cursor.getColumnIndex("VENTAS_Act")));
+                    rPromedios3[5] = (String) (cursor.isNull(5)? "": cursor.getString(cursor.getColumnIndex("NUM_ART_FAC_Act")));
+                    rPromedios3[6] = (String) (cursor.isNull(6)? "0.00": cursor.getString(cursor.getColumnIndex("PROMEDIO_ART_ACT")));
+                    rPromedios3[7] = (String) (cursor.isNull(7)? "0.00": cursor.getString(cursor.getColumnIndex("MontoPromXFactAct")));
                     cursor.moveToNext();
                 }
             }

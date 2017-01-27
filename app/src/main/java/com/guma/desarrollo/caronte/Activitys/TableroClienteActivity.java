@@ -87,10 +87,10 @@ public class TableroClienteActivity extends AppCompatActivity {
         List items = new ArrayList();
         if(cursor.length > 0)
         {
-            items.add(new Indicadores3(R.drawable.logo, "VENTA EN VALORES", "Promedio: ".concat(cursor[0]==null?"0.00":cursor[0]), "Meta: 0", "Actual: 0", "Pendiente: 0"));
-            items.add(new Indicadores3(R.drawable.logo, "PROMEDIO DE ITEMS FACTURADOS", "Promedio: ".concat(cursor[1]==null?"0":cursor[1]), "Meta: 0", "Actual: 0", "Pendiente: 0"));
-            items.add(new Indicadores3(R.drawable.logo, "MONTO POR FACTURA", "Promedio: ".concat(cursor[3]==null?"0":cursor[3]), "Meta: 0", "Actual: 0", "Pendiente: 0"));
-            items.add(new Indicadores3(R.drawable.logo, "PROMEDIO DE ITEMS POR FACTURA", "Promedio: ".concat(cursor[2]==null?"0":cursor[2 ]), "Meta: 0", "Actual: 0", "Pendiente: 0"));
+            items.add(new Indicadores3(R.drawable.logo, "VENTA EN VALORES", "Promedio: ".concat(cursor[0]==null?"0.00":cursor[0]), "Meta: 0", "Actual: ".concat(cursor[4]==null?"0.00":cursor[4]), "Pendiente: 0"));
+            items.add(new Indicadores3(R.drawable.logo, "PROMEDIO DE ITEMS FACTURADOS", "Promedio: ".concat(cursor[1]==null?"0":cursor[1]), "Meta: 0", "Actual: ".concat(cursor[5]==null?"0":cursor[5]), "Pendiente: 0"));
+            items.add(new Indicadores3(R.drawable.logo, "MONTO POR FACTURA", "Promedio: ".concat(cursor[3]==null?"0":cursor[3]), "Meta: 0", "Actual: ".concat(cursor[7]==null?"0":cursor[7]), "Pendiente: 0"));
+            items.add(new Indicadores3(R.drawable.logo, "PROMEDIO DE ITEMS POR FACTURA", "Promedio: ".concat(cursor[2]==null?"0":cursor[2]), "Meta: 0", "Actual: ".concat(cursor[6]==null?"0":cursor[6]), "Pendiente: 0"));
         }
 
         /*items.add(new Indicadores3(R.drawable.logo, "", "MONTO POR FACTURA", "0", "", ""));

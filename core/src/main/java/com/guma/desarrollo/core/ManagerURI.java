@@ -20,7 +20,7 @@ public class ManagerURI {
     private static String URL_VENDEDOR="http://"+ SERVER + "/rest_app_venta/VENDEDORES.php";
     private static String URL_FACTURAS="http://"+ SERVER + "/rest_app_venta/FACTURAS.php";
     private static String URL_PORRECUPERAR="http://"+ SERVER + "/rest_app_venta/PorRecuperar.php";
-    private static String URL_FACTURASINDICADORES3="http://"+ SERVER + "/rest_app_venta/FACTURASINDICADORES.php";
+    private static String URL_FACTURASINDICADORES3="http://"+ SERVER + "/rest_app_venta/INDICADORESCONSOLIDADOS.php";
 
     private static String DIR_DB = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator;
     //private static String DIR_DB = "com.guma.desarrollo.caronte" + File.separator;

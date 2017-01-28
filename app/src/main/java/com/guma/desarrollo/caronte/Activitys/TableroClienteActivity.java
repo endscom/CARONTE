@@ -91,6 +91,7 @@ public class TableroClienteActivity extends AppCompatActivity {
             items.add(new Indicadores3(R.drawable.logo, "PROMEDIO DE ITEMS FACTURADOS", "Promedio: ".concat(cursor[1]==null?"0":cursor[1]), "Meta: 0", "Actual: ".concat(cursor[5]==null?"0":cursor[5]), "Pendiente: 0"));
             items.add(new Indicadores3(R.drawable.logo, "MONTO POR FACTURA", "Promedio: ".concat(cursor[3]==null?"0":cursor[3]), "Meta: 0", "Actual: ".concat(cursor[7]==null?"0":cursor[7]), "Pendiente: 0"));
             items.add(new Indicadores3(R.drawable.logo, "PROMEDIO DE ITEMS POR FACTURA", "Promedio: ".concat(cursor[2]==null?"0":cursor[2]), "Meta: 0", "Actual: ".concat(cursor[6]==null?"0":cursor[6]), "Pendiente: 0"));
+            items.add(new Indicadores3(R.drawable.logo, "PRODUCTOS FACTURADOS", "Promedio: ".concat(cursor[8]==null?"0":cursor[8]), "Meta: 0", "Actual: ".concat(cursor[9]==null?"0":cursor[9]), "Pendiente: 0"));
         }
 
         /*items.add(new Indicadores3(R.drawable.logo, "", "MONTO POR FACTURA", "0", "", ""));

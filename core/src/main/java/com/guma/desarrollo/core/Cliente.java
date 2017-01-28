@@ -10,13 +10,15 @@ public class Cliente {
     private String mName;
     private String mTitle;
     private String mCompany;
+    private String mProdFact;
     private int mImage;
 
-    public Cliente(String name, String title, String company, int image) {
+    public Cliente(String name, String title, String company, String prodfact, int image) {
         mId = UUID.randomUUID().toString();
         mName = name;
         mTitle = title;
         mCompany = company;
+        mProdFact = prodfact;
         mImage = image;
     }
 
@@ -51,6 +53,10 @@ public class Cliente {
     public void setCompany(String mCompany) {
         this.mCompany = mCompany;
     }
+
+    public String getProdFact() { return mProdFact; }
+
+    public void setProdFact(String mProdFact) { this.mProdFact = mProdFact; }
 
     public int getImage() {
         return mImage;

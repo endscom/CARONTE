@@ -52,7 +52,8 @@
         <activity android:name=".Activitys.AgendaCompletaActivity" />
         <activity android:name=".Activitys.VentasPorClienteActivity" />
         <activity android:name=".Activitys.VentasPorArticuloActivity" />
-        <activity android:name=".Activitys.NumArticulosPorCliente"></activity>
+        <activity android:name=".Activitys.NumArticulosPorCliente" />
+        <activity android:name=".Activitys.CuotaVentaXProductoActivity"></activity>
     </application>
 
 </manifest>

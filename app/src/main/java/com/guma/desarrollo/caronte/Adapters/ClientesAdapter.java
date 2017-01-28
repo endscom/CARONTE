@@ -33,7 +33,8 @@ public class ClientesAdapter extends ArrayAdapter<Cliente> {
 
         if (null == convertView) {
             convertView = inflater.inflate(
-                    R.layout.list_item_lead,
+                    //R.layout.list_item_lead,
+                    R.layout.list_item_indicadores_clientes,
                     parent,
                     false);
         }
@@ -42,6 +43,7 @@ public class ClientesAdapter extends ArrayAdapter<Cliente> {
         TextView name = (TextView) convertView.findViewById(R.id.tv_name);
         TextView title = (TextView) convertView.findViewById(R.id.tv_title);
         TextView company = (TextView) convertView.findViewById(R.id.tv_company);
+        TextView prodfact = (TextView) convertView.findViewById(R.id.tv_prodfact);
 
         Cliente cliente = getItem(position);
 
@@ -49,6 +51,7 @@ public class ClientesAdapter extends ArrayAdapter<Cliente> {
         name.setText(cliente.getName());
         title.setText(cliente.getTitle());
         company.setText(cliente.getCompany());
+        prodfact.setText(cliente.getProdFact());
 
         return convertView;
     }
@@ -64,7 +67,7 @@ public class ClientesAdapter extends ArrayAdapter<Cliente> {
             for (Cliente obj : clst){
                 if (obj.getName().toLowerCase().contains(query))
                 {
-                    newitems.add(new Cliente(obj.getName(),obj.getTitle(),obj.getCompany(),R.id.iv_avatar));
+                    newitems.add(new Cliente(obj.getName(),obj.getTitle(),obj.getCompany(), obj.getProdFact(), R.id.iv_avatar));
                 }
             }
 

@@ -240,13 +240,17 @@ public class ClientesRepository {
     public static String[] getPromedios3(Context ctx, String CodCliente, String NombreCliente){
         SQLiteDatabase myDataBase = null;
         SQLiteHelper myDbHelper = null;
-        String[] rPromedios3 = new String[8];
+        String[] rPromedios3 = new String[10];
         try
         {
             myDbHelper = new SQLiteHelper(ManagerURI.getDIR_DB(), ctx);
             myDataBase = myDbHelper.getReadableDatabase();
             //Cursor cursor = myDataBase.rawQuery("SELECT p3.NOMBRECLIENTE, p3.CLIENTE, ROUND(p3.PRM_ART_3,2) PRM_ART_3, ROUND(p3.PRM_VTA_3,2) PRM_VTA_3 FROM PROMEDIOS3 p3 WHERE CLIENTE='"+CodCliente+"';", null);
-            Cursor cursor = myDataBase.rawQuery("SELECT ROUND(i.VENTAS_3,4) VENTAS_3, i.NUM_ART_FAC_3, ROUND(i.PROMEDIO_ART_3,4) PROMEDIO_ART_3, ROUND(i.MontoPromXFac_3,4) MontoPromXFac_3, ROUND(i.VENTAS_Act,4) VENTAS_Act, i.NUM_ART_FAC_Act, ROUND(i.PROMEDIO_ART_ACT,4) PROMEDIO_ART_ACT, ROUND(i.MontoPromXFactAct,4) MontoPromXFactAct FROM INDICADORES3 i WHERE i.CODCLIENTE='"+CodCliente+"';", null);
+            Cursor cursor = myDataBase.rawQuery("SELECT ROUND(i.VENTAS_3,4) VENTAS_3, i.NUM_ART_FAC_3, ROUND(i.PROMEDIO_ART_3,4) PROMEDIO_ART_3, " +
+                                                "ROUND(i.MontoPromXFac_3,4) MontoPromXFac_3, ROUND(i.VENTAS_Act,4) VENTAS_Act, i.NUM_ART_FAC_Act, " +
+                                                "ROUND(i.PROMEDIO_ART_ACT,4) PROMEDIO_ART_ACT, ROUND(i.MontoPromXFactAct,4) MontoPromXFactAct, " +
+                                                "ROUND(i.PROD_FACT_3,4) PROD_FACT_3, ROUND(i.PROD_FACT_Act,4) PROD_FACT_Act " +
+                                                "FROM INDICADORES3 i WHERE i.CODCLIENTE='"+CodCliente+"';", null);
             if(cursor.getCount() > 0)
             {
                 cursor.moveToFirst();
@@ -260,6 +264,8 @@ public class ClientesRepository {
                     rPromedios3[5] = (String) (cursor.isNull(5)? "": cursor.getString(cursor.getColumnIndex("NUM_ART_FAC_Act")));
                     rPromedios3[6] = (String) (cursor.isNull(6)? "0.00": cursor.getString(cursor.getColumnIndex("PROMEDIO_ART_ACT")));
                     rPromedios3[7] = (String) (cursor.isNull(7)? "0.00": cursor.getString(cursor.getColumnIndex("MontoPromXFactAct")));
+                    rPromedios3[8] = (String) (cursor.isNull(8)? "0.00": cursor.getString(cursor.getColumnIndex("PROD_FACT_3")));
+                    rPromedios3[9] = (String) (cursor.isNull(9)? "0.00": cursor.getString(cursor.getColumnIndex("PROD_FACT_Act")));
                     cursor.moveToNext();
                 }
             }
@@ -317,7 +323,7 @@ public class ClientesRepository {
                 cursor.moveToFirst();
                 while(!cursor.isAfterLast())
                 {
-                    saveLead(new Cliente(cursor.getString(cursor.getColumnIndex("NOMBRE")),cursor.getString(cursor.getColumnIndex("CLIENTE")), cursor.getString(cursor.getColumnIndex("DIRECCION")), R.drawable.icon));
+                    saveLead(new Cliente(cursor.getString(cursor.getColumnIndex("NOMBRE")),cursor.getString(cursor.getColumnIndex("CLIENTE")), cursor.getString(cursor.getColumnIndex("DIRECCION")), "", R.drawable.icon));
 
                     cursor.moveToNext();
                 }

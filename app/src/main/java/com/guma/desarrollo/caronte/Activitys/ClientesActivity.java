@@ -1,6 +1,8 @@
 package com.guma.desarrollo.caronte.Activitys;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,13 +16,26 @@ import android.widget.Toast;
 import com.guma.desarrollo.caronte.Adapters.ClientesAdapter;
 import com.guma.desarrollo.caronte.AsyncHttpManager.ClientesRepository;
 import com.guma.desarrollo.caronte.R;
+import com.guma.desarrollo.core.Clock;
+import com.guma.desarrollo.core.ManagerURI;
+import com.guma.desarrollo.core.SQLiteHelper;
+
 import com.guma.desarrollo.core.Cliente;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class ClientesActivity extends AppCompatActivity {
     MaterialSearchView searchView;
     ListView mClienteList;
     ClientesAdapter mClientesAdapter;
+
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+
 
     ClientesAdapter mAdapterResultSearch;
     @Override
@@ -32,9 +47,13 @@ public class ClientesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitleTextColor(getResources().getColor(R.color.Blanco));
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
+
         setTitle("LISTA DE CLIENTES");
         mClienteList = (ListView) findViewById(R.id.leads_list);
         mClientesAdapter = new ClientesAdapter(this, ClientesRepository.getInstance(ClientesActivity.this).getClientes());
+
         mClienteList.setAdapter(mClientesAdapter);
         mClienteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -84,6 +103,17 @@ public class ClientesActivity extends AppCompatActivity {
                 //Do some magic
             }
         });
+    }
+    @Override
+    protected void onPause() {
+        SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),this,"INSERT INTO LOG VALUES ('" + preferences.getString("User","") + "','" + Clock.getTimeStamp() + "', 'Lista de Cliente', 'OUT')");
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),this,"INSERT INTO LOG VALUES ('" + preferences.getString("User","") + "', '" + Clock.getTimeStamp() + "', 'Lista de Cliente', 'IN')");
+        super.onResume();
     }
     @Override
     public void onBackPressed() {

@@ -21,6 +21,8 @@ import com.guma.desarrollo.core.ManagerURI;
 import com.guma.desarrollo.core.SQLiteHelper;
 import com.guma.desarrollo.core.Usuario;
 
+import java.io.IOException;
+
 public class LoginActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
@@ -34,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
 
+        SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),this,"SELECT * FROM Usuarios");
+
         mAgente = (TextView) findViewById(R.id.agente);
         mPassword = (TextView) findViewById(R.id.password);
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
@@ -46,16 +50,16 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Hay Campos Vacios", Toast.LENGTH_SHORT).show();
                 }else{
                     if (Usuario.leerDB(vUsuario,vPassword,ManagerURI.getDIR_DB(),LoginActivity.this)){
-                        //editor.putString("User",vUsuario);
-                        //editor.putString("Password",vPassword);
-                        //editor.apply();
+                        editor.putString("User",vUsuario);
+                        editor.putString("Password",vPassword);
+                        editor.apply();
                         startActivity(new Intent(LoginActivity.this,TableroActivity.class));
                     }else{
                         if (ManagerURI.isOnlinea(LoginActivity.this)){
                             if (Usuarios.getAsyncHttpUsuario(vUsuario,vPassword,LoginActivity.this)){
-                                //editor.putString("User",vUsuario);
-                                //editor.putString("Password",vPassword);
-                                //editor.apply();
+                                editor.putString("User",vUsuario);
+                                editor.putString("Password",vPassword);
+                                editor.apply();
                                 startActivity(new Intent(LoginActivity.this,TableroActivity.class));
                             }else{
                                 Toast.makeText(LoginActivity.this, "Oooopp!!...Algo Salio mal", Toast.LENGTH_SHORT).show();

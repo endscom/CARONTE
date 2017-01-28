@@ -21,6 +21,7 @@ public final class SQLiteHelper extends SQLiteOpenHelper
     
     public static final String DATABASE = "caronte.db";
     private static final int flag = SQLiteDatabase.NO_LOCALIZED_COLLATORS;//database version
+    //private static final int flag = 102;//database version
     //private static final int flag = 1;
     private final String path;
     public SQLiteHelper(String path, Context context) throws IOException

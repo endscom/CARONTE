@@ -33,10 +33,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
 
         SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),this,"SELECT * FROM Usuarios");
+        setTitle("INDICADORES MOVILES DE VENTAS ");
 
         mAgente = (TextView) findViewById(R.id.agente);
         mPassword = (TextView) findViewById(R.id.password);

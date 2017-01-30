@@ -12,7 +12,15 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-
+    <style name="txtLabel" parent="TextAppearance.AppCompat">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/Blanco</item>
+        <item name="android:textSize">20sp</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/Blanco</item>
+        <item name="colorControlNormal">@color/Blanco</item>
+        <item name="colorControlActivated">@color/Blanco</item>
+    </style>
     <style name="Search">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

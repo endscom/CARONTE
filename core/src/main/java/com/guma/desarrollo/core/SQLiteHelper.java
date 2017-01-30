@@ -19,7 +19,7 @@ import java.io.OutputStream;
 public final class SQLiteHelper extends SQLiteOpenHelper
 {
     
-    public static final String DATABASE = "caronte.db";
+    public static final String DATABASE = "dbimv.db";
     private static final int flag = SQLiteDatabase.NO_LOCALIZED_COLLATORS;//database version
     //private static final int flag = 102;//database version
     //private static final int flag = 1;

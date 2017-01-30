@@ -94,6 +94,81 @@ public class ClientesRepository {
             }
         });
     }
+
+    public static void getAsyncHttpMetasPorCliente(String vendedor, String Permiso, final Context cxnt)
+    {
+        AsyncHttpClient getFacturas = new AsyncHttpClient();
+        RequestParams parametros = new RequestParams();
+        parametros.put("V",vendedor);
+        parametros.put("P",Permiso);
+        getFacturas.get(ManagerURI.getURL_METASXCLIENTE(), parametros, new AsyncHttpResponseHandler() {
+            public ProgressDialog pdialog;
+            @Override
+            public void onStart() {
+                pdialog = ProgressDialog.show(cxnt, "","Procesando. Porfavor Espere...", true);
+            }
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                JSONArray jsonArray = null;
+                try {
+                    jsonArray = new JSONArray(new String(responseBody));
+                    JSONObject joFacturas = (JSONObject) jsonArray.getJSONObject(0).get("METASXCLIENTE");
+
+                    SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),cxnt,"DELETE FROM METAS_POR_CLIENTE");
+                    for (int i=0;i<joFacturas.length();i++)
+                    //for (int i=0;i<jsonArray.length();i++)
+                    {
+                        SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,joFacturas.getString("METASXCLIENTE"+i));
+                        //SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,jsonArray.getString(""+i));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                pdialog.dismiss();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
+
+    public static void getAsyncHttpCuotaVtaXProducto(String vendedor, String Permiso, final Context cxnt)
+    {
+        AsyncHttpClient getFacturas = new AsyncHttpClient();
+        RequestParams parametros = new RequestParams();
+        parametros.put("V",vendedor);
+        parametros.put("P",Permiso);
+        getFacturas.get(ManagerURI.getURL_CUOTAXPRODUCTO(), parametros, new AsyncHttpResponseHandler() {
+            public ProgressDialog pdialog;
+            @Override
+            public void onStart() {
+                pdialog = ProgressDialog.show(cxnt, "","Procesando. Porfavor Espere...", true);
+            }
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                JSONArray jsonArray = null;
+                try {
+                    jsonArray = new JSONArray(new String(responseBody));
+                    JSONObject joFacturas = (JSONObject) jsonArray.getJSONObject(0).get("CUOTAXPRODUCTO");
+
+                    SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),cxnt,"DELETE FROM CUOTA_POR_PRODUCTO");
+                    for (int i=0;i<joFacturas.length();i++)
+                    //for (int i=0;i<jsonArray.length();i++)
+                    {
+                        SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,joFacturas.getString("CUOTAXPRODUCTO"+i));
+                        //SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,jsonArray.getString(""+i));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                pdialog.dismiss();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
+
     public static void getAsyncHttpFacturasIndicadores(String vendedor, String Permiso, final Context cxnt)
     {
         AsyncHttpClient getFacturas = new AsyncHttpClient();
@@ -250,7 +325,7 @@ public class ClientesRepository {
     public static String[] getPromedios3(Context ctx, String CodCliente, String NombreCliente){
         SQLiteDatabase myDataBase = null;
         SQLiteHelper myDbHelper = null;
-        String[] rPromedios3 = new String[10];
+        String[] rPromedios3 = new String[14];
         try
         {
             myDbHelper = new SQLiteHelper(ManagerURI.getDIR_DB(), ctx);
@@ -260,7 +335,8 @@ public class ClientesRepository {
                                                 "ROUND(i.MontoPromXFac_3,4) MontoPromXFac_3, ROUND(i.VENTAS_Act,4) VENTAS_Act, i.NUM_ART_FAC_Act, " +
                                                 "ROUND(i.PROMEDIO_ART_ACT,4) PROMEDIO_ART_ACT, ROUND(i.MontoPromXFactAct,4) MontoPromXFactAct, " +
                                                 "ROUND(i.PROD_FACT_3,4) PROD_FACT_3, ROUND(i.PROD_FACT_Act,4) PROD_FACT_Act " +
-                                                "FROM INDICADORES3 i WHERE i.CODCLIENTE='"+CodCliente+"';", null);
+                                                ", m.MontoVenta MetaMontoVenta, m.NumItemFac MetaNumItemFac, m.MontoXFact MetaMontoXFact, m.PromItemFac MetaPromItemFac " +
+                                                "FROM INDICADORES3 i INNER JOIN METAS_POR_CLIENTE m ON i.CODCLIENTE=m.CodCliente WHERE i.CODCLIENTE='"+CodCliente+"';", null);
             if(cursor.getCount() > 0)
             {
                 cursor.moveToFirst();
@@ -276,6 +352,12 @@ public class ClientesRepository {
                     rPromedios3[7] = (String) (cursor.isNull(7)? "0.00": cursor.getString(cursor.getColumnIndex("MontoPromXFactAct")));
                     rPromedios3[8] = (String) (cursor.isNull(8)? "0.00": cursor.getString(cursor.getColumnIndex("PROD_FACT_3")));
                     rPromedios3[9] = (String) (cursor.isNull(9)? "0.00": cursor.getString(cursor.getColumnIndex("PROD_FACT_Act")));
+
+                    rPromedios3[10] = (String) (cursor.isNull(10)? "0.00": cursor.getString(cursor.getColumnIndex("MetaMontoVenta")));
+                    rPromedios3[11] = (String) (cursor.isNull(11)? "0.00": cursor.getString(cursor.getColumnIndex("MetaNumItemFac")));
+                    rPromedios3[12] = (String) (cursor.isNull(12)? "0.00": cursor.getString(cursor.getColumnIndex("MetaMontoXFact")));
+                    rPromedios3[13] = (String) (cursor.isNull(13)? "0.00": cursor.getString(cursor.getColumnIndex("MetaPromItemFac")));
+
                     cursor.moveToNext();
                 }
             }

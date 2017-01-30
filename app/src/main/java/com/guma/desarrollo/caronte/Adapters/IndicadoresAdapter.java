@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.guma.desarrollo.caronte.Activitys.CuotaVentaXProductoActivity;
 import com.guma.desarrollo.caronte.Activitys.DetalleTableroActivity;
 import com.guma.desarrollo.caronte.Activitys.NumArticulosPorCliente;
 import com.guma.desarrollo.caronte.Activitys.VentasPorArticuloActivity;
@@ -84,6 +85,14 @@ import java.util.List;
                     x.putExtra("TITULO",items.get(i).getNombre());
                     v.getContext().startActivity(x);
                 }
+
+                if (items.get(i).getNombre()=="CUOTA DE VENTAS POR ARTICULO")
+                {
+                    Intent x = new Intent(v.getContext(), CuotaVentaXProductoActivity.class);
+                    x.putExtra("TITULO",items.get(i).getNombre());
+                    v.getContext().startActivity(x);
+                }
+
             }
         });
 

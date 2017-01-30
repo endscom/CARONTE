@@ -61,10 +61,6 @@ public class TableroActivity extends AppCompatActivity
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
 
-
-
-
-
 /*
         CargarClientes(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
         CargarFacturas(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
@@ -72,6 +68,8 @@ public class TableroActivity extends AppCompatActivity
         CargarClientes("F06","0",TableroActivity.this);
         CargarFacturas("F06","0",TableroActivity.this);
         CargarFacturasIndicadores("F06","0",TableroActivity.this);
+        CargaCuotaPorProducto("F06","0",TableroActivity.this);
+        CargaMetasPorCliente("F06","0",TableroActivity.this);
         //CargarPorRecuperar(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
 
         List items = new ArrayList();
@@ -85,7 +83,6 @@ public class TableroActivity extends AppCompatActivity
             items.add(new Indicadores(R.drawable.logo, "# ITEMS POR CLIENTE", ""));
             items.add(new Indicadores(R.drawable.logo, "VENTA TOTAL", Venta[0]));
         }
-
 
         //items.add(new Indicadores(R.drawable.logo, "VENTA TOTAL", "0"));
         items.add(new Indicadores(R.drawable.logo, "VENTAS POR ARTICULO", ""));
@@ -102,6 +99,9 @@ public class TableroActivity extends AppCompatActivity
             items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR ITEM", cursor[0]));
             items.add(new Indicadores(R.drawable.logo, "PROMEDIO POR FACTURA", cursor[1]));
         }
+
+        //AGREGAR EL NODO DE CUOTA DE VENTAS POR PRODUCTO
+        items.add(new Indicadores(R.drawable.logo, "CUOTA DE VENTAS POR ARTICULO", ""));
 
         recycler = (RecyclerView) findViewById(R.id.my_recycler_view);
         recycler.setHasFixedSize(true);
@@ -127,12 +127,34 @@ public class TableroActivity extends AppCompatActivity
     {
         if (ManagerURI.isOnlinea(TableroActivity.this))
         {
-            //ClientesRepository.getAsyncHttpClientes("F06","0",TableroActivity.this);
-            ClientesRepository.getAsyncHttpClientes(Vendedor,Perfil,cnxt);
+            ClientesRepository.getAsyncHttpClientes("F06","0",TableroActivity.this);
+            //ClientesRepository.getAsyncHttpClientes(Vendedor,Perfil,cnxt);
         }
         else
         {
             Toast.makeText(TableroActivity.this, "Sin permiso de internet", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    void CargaMetasPorCliente(String Vendedor, String Perfil, final Context cnxt){
+        if (ManagerURI.isOnlinea(TableroActivity.this))
+        {
+            ClientesRepository.getAsyncHttpMetasPorCliente(Vendedor, Perfil , cnxt);
+        }
+        else
+        {
+            Toast.makeText(TableroActivity.this, "Sin Permiso de Internet", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    void CargaCuotaPorProducto(String Vendedor, String Perfil, final Context cnxt){
+        if (ManagerURI.isOnlinea(TableroActivity.this))
+        {
+            ClientesRepository.getAsyncHttpCuotaVtaXProducto(Vendedor, Perfil , cnxt);
+        }
+        else
+        {
+            Toast.makeText(TableroActivity.this, "Sin Permiso de Internet", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -152,6 +174,7 @@ public class TableroActivity extends AppCompatActivity
         if (ManagerURI.isOnlinea(TableroActivity.this))
         {
             ClientesRepository.getAsyncHttpFacturas(Vendedor,Perfil,cnxt);
+
         }
         else
         {

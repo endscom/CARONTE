@@ -94,6 +94,81 @@ public class ClientesRepository {
             }
         });
     }
+
+    public static void getAsyncHttpMetasPorCliente(String vendedor, String Permiso, final Context cxnt)
+    {
+        AsyncHttpClient getFacturas = new AsyncHttpClient();
+        RequestParams parametros = new RequestParams();
+        parametros.put("V",vendedor);
+        parametros.put("P",Permiso);
+        getFacturas.get(ManagerURI.getURL_METASXCLIENTE(), parametros, new AsyncHttpResponseHandler() {
+            public ProgressDialog pdialog;
+            @Override
+            public void onStart() {
+                pdialog = ProgressDialog.show(cxnt, "","Procesando. Porfavor Espere...", true);
+            }
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                JSONArray jsonArray = null;
+                try {
+                    jsonArray = new JSONArray(new String(responseBody));
+                    JSONObject joFacturas = (JSONObject) jsonArray.getJSONObject(0).get("METASXCLIENTE");
+
+                    SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),cxnt,"DELETE FROM METAS_POR_CLIENTE");
+                    for (int i=0;i<joFacturas.length();i++)
+                    //for (int i=0;i<jsonArray.length();i++)
+                    {
+                        SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,joFacturas.getString("METASXCLIENTE"+i));
+                        //SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,jsonArray.getString(""+i));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                pdialog.dismiss();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
+
+    public static void getAsyncHttpCuotaVtaXProducto(String vendedor, String Permiso, final Context cxnt)
+    {
+        AsyncHttpClient getFacturas = new AsyncHttpClient();
+        RequestParams parametros = new RequestParams();
+        parametros.put("V",vendedor);
+        parametros.put("P",Permiso);
+        getFacturas.get(ManagerURI.getURL_CUOTAXPRODUCTO(), parametros, new AsyncHttpResponseHandler() {
+            public ProgressDialog pdialog;
+            @Override
+            public void onStart() {
+                pdialog = ProgressDialog.show(cxnt, "","Procesando. Porfavor Espere...", true);
+            }
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                JSONArray jsonArray = null;
+                try {
+                    jsonArray = new JSONArray(new String(responseBody));
+                    JSONObject joFacturas = (JSONObject) jsonArray.getJSONObject(0).get("CUOTAXPRODUCTO");
+
+                    SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),cxnt,"DELETE FROM CUOTA_POR_PRODUCTO");
+                    for (int i=0;i<joFacturas.length();i++)
+                    //for (int i=0;i<jsonArray.length();i++)
+                    {
+                        SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,joFacturas.getString("CUOTAXPRODUCTO"+i));
+                        //SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,jsonArray.getString(""+i));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                pdialog.dismiss();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
+
     public static void getAsyncHttpFacturasIndicadores(String vendedor, String Permiso, final Context cxnt)
     {
         AsyncHttpClient getFacturas = new AsyncHttpClient();
@@ -111,12 +186,12 @@ public class ClientesRepository {
                 JSONArray jsonArray = null;
                 try {
                     jsonArray = new JSONArray(new String(responseBody));
-                    JSONObject joFacturas = (JSONObject) jsonArray.getJSONObject(0).get("FACTURASINDICADORES");
+                    JSONObject joFacturas = (JSONObject) jsonArray.getJSONObject(0).get("INDICADORESCONSOLIDADOS");
 
                     SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(),cxnt,"DELETE FROM INDICADORES3");
                     for (int i=0;i<joFacturas.length();i++)
                     {
-                        SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,joFacturas.getString("FACTURASINDICADORES"+i));
+                        SQLiteHelper.ExecuteSQL(ManagerURI.getDIR_DB(), cxnt,joFacturas.getString("INDICADORESCONSOLIDADOS"+i));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -250,22 +325,39 @@ public class ClientesRepository {
     public static String[] getPromedios3(Context ctx, String CodCliente, String NombreCliente){
         SQLiteDatabase myDataBase = null;
         SQLiteHelper myDbHelper = null;
-        String[] rPromedios3 = new String[4];
+        String[] rPromedios3 = new String[14];
         try
         {
             myDbHelper = new SQLiteHelper(ManagerURI.getDIR_DB(), ctx);
             myDataBase = myDbHelper.getReadableDatabase();
             //Cursor cursor = myDataBase.rawQuery("SELECT p3.NOMBRECLIENTE, p3.CLIENTE, ROUND(p3.PRM_ART_3,2) PRM_ART_3, ROUND(p3.PRM_VTA_3,2) PRM_VTA_3 FROM PROMEDIOS3 p3 WHERE CLIENTE='"+CodCliente+"';", null);
-            Cursor cursor = myDataBase.rawQuery("SELECT ROUND(i.VENTAS_3,4) VENTAS, i.NUM_ART_FAC, ROUND(i.PROMEDIO_ART,4) PROMEDIO_ART, ROUND(i.MontoPromXFac,4) MontoPromXFac FROM INDICADORES3 i WHERE i.CODCLIENTE='"+CodCliente+"';", null);
+            Cursor cursor = myDataBase.rawQuery("SELECT ROUND(i.VENTAS_3,4) VENTAS_3, i.NUM_ART_FAC_3, ROUND(i.PROMEDIO_ART_3,4) PROMEDIO_ART_3, " +
+                                                "ROUND(i.MontoPromXFac_3,4) MontoPromXFac_3, ROUND(i.VENTAS_Act,4) VENTAS_Act, i.NUM_ART_FAC_Act, " +
+                                                "ROUND(i.PROMEDIO_ART_ACT,4) PROMEDIO_ART_ACT, ROUND(i.MontoPromXFactAct,4) MontoPromXFactAct, " +
+                                                "ROUND(i.PROD_FACT_3,4) PROD_FACT_3, ROUND(i.PROD_FACT_Act,4) PROD_FACT_Act " +
+                                                ", m.MontoVenta MetaMontoVenta, m.NumItemFac MetaNumItemFac, m.MontoXFact MetaMontoXFact, m.PromItemFac MetaPromItemFac " +
+                                                "FROM INDICADORES3 i INNER JOIN METAS_POR_CLIENTE m ON i.CODCLIENTE=m.CodCliente WHERE i.CODCLIENTE='"+CodCliente+"';", null);
             if(cursor.getCount() > 0)
             {
                 cursor.moveToFirst();
                 while(!cursor.isAfterLast())
                 {
-                    rPromedios3[0] = (String) (cursor.isNull(0)? CodCliente: cursor.getString(cursor.getColumnIndex("VENTAS")));
-                    rPromedios3[1] = (String) (cursor.isNull(1)? "": cursor.getString(cursor.getColumnIndex("NUM_ART_FAC")));
-                    rPromedios3[2] = (String) (cursor.isNull(2)? "0.00": cursor.getString(cursor.getColumnIndex("PROMEDIO_ART")));
-                    rPromedios3[3] = (String) (cursor.isNull(3)? "0.00": cursor.getString(cursor.getColumnIndex("MontoPromXFac")));
+                    rPromedios3[0] = (String) (cursor.isNull(0)? CodCliente: cursor.getString(cursor.getColumnIndex("VENTAS_3")));
+                    rPromedios3[1] = (String) (cursor.isNull(1)? "": cursor.getString(cursor.getColumnIndex("NUM_ART_FAC_3")));
+                    rPromedios3[2] = (String) (cursor.isNull(2)? "0.00": cursor.getString(cursor.getColumnIndex("PROMEDIO_ART_3")));
+                    rPromedios3[3] = (String) (cursor.isNull(3)? "0.00": cursor.getString(cursor.getColumnIndex("MontoPromXFac_3")));
+                    rPromedios3[4] = (String) (cursor.isNull(4)? CodCliente: cursor.getString(cursor.getColumnIndex("VENTAS_Act")));
+                    rPromedios3[5] = (String) (cursor.isNull(5)? "": cursor.getString(cursor.getColumnIndex("NUM_ART_FAC_Act")));
+                    rPromedios3[6] = (String) (cursor.isNull(6)? "0.00": cursor.getString(cursor.getColumnIndex("PROMEDIO_ART_ACT")));
+                    rPromedios3[7] = (String) (cursor.isNull(7)? "0.00": cursor.getString(cursor.getColumnIndex("MontoPromXFactAct")));
+                    rPromedios3[8] = (String) (cursor.isNull(8)? "0.00": cursor.getString(cursor.getColumnIndex("PROD_FACT_3")));
+                    rPromedios3[9] = (String) (cursor.isNull(9)? "0.00": cursor.getString(cursor.getColumnIndex("PROD_FACT_Act")));
+
+                    rPromedios3[10] = (String) (cursor.isNull(10)? "0.00": cursor.getString(cursor.getColumnIndex("MetaMontoVenta")));
+                    rPromedios3[11] = (String) (cursor.isNull(11)? "0.00": cursor.getString(cursor.getColumnIndex("MetaNumItemFac")));
+                    rPromedios3[12] = (String) (cursor.isNull(12)? "0.00": cursor.getString(cursor.getColumnIndex("MetaMontoXFact")));
+                    rPromedios3[13] = (String) (cursor.isNull(13)? "0.00": cursor.getString(cursor.getColumnIndex("MetaPromItemFac")));
+
                     cursor.moveToNext();
                 }
             }
@@ -323,7 +415,7 @@ public class ClientesRepository {
                 cursor.moveToFirst();
                 while(!cursor.isAfterLast())
                 {
-                    saveLead(new Cliente(cursor.getString(cursor.getColumnIndex("NOMBRE")),cursor.getString(cursor.getColumnIndex("CLIENTE")), cursor.getString(cursor.getColumnIndex("DIRECCION")), R.drawable.icon));
+                    saveLead(new Cliente(cursor.getString(cursor.getColumnIndex("NOMBRE")),cursor.getString(cursor.getColumnIndex("CLIENTE")), cursor.getString(cursor.getColumnIndex("DIRECCION")), "", R.drawable.icon));
 
                     cursor.moveToNext();
                 }

@@ -41,6 +41,10 @@ public class VentasPorArticuloActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ventas_por_articulo);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
@@ -53,6 +57,13 @@ public class VentasPorArticuloActivity extends AppCompatActivity {
         setTitle("VENTAS POR ARTICULO");
 
 
+    }
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if (id == 16908332){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
     @Override
     protected void onPause() {

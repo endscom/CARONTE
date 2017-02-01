@@ -34,6 +34,9 @@ public class CuotaVentaXProductoActivity extends AppCompatActivity {
         //setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //toolbar.setTitleTextColor(getResources().getColor(R.color.Blanco));
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         setTitle("CUOTA DE VENTAS POR ARTICULO");
 
@@ -41,5 +44,12 @@ public class CuotaVentaXProductoActivity extends AppCompatActivity {
         mCuotaVentaXProductoAdapter = new CuotaVentaXProductoAdapter(this, CuotaVentaXProductoRepository.getInstance(CuotaVentaXProductoActivity.this).getCuotaVentasPorProducto());
         mCuotaVentaXProductoList.setAdapter(mCuotaVentaXProductoAdapter);
 
+    }
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if (id == 16908332){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

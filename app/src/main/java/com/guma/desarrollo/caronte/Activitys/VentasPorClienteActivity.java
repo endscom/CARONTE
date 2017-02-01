@@ -48,6 +48,9 @@ public class VentasPorClienteActivity extends AppCompatActivity {
 
 
         setTitle("VENTAS POR CLIENTES");
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         mVentasPorClienteList = (ListView) findViewById(R.id.leads_list_v);
         //mVentasPorClienteAdapter = new VentasPorClientesAdapter(this, ClientesRepository.getInstance(VentasPorClienteActivity.this).getVentasPorcliente());
@@ -61,6 +64,13 @@ public class VentasPorClienteActivity extends AppCompatActivity {
                                                          }
                                                      }
         );
+    }
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if (id == 16908332){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
     @Override
     protected void onPause() {

@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guma.desarrollo.caronte.Adapters.IndicadoresAdapter;
@@ -55,21 +56,31 @@ public class TableroActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
 
+
+
 /*
         CargarClientes(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
         CargarFacturas(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
 */
-        CargarClientes("F06","0",TableroActivity.this);
-        CargarFacturas("F06","0",TableroActivity.this);
-        CargarFacturasIndicadores("F06","0",TableroActivity.this);
-        CargaCuotaPorProducto("F06","0",TableroActivity.this);
-        CargaMetasPorCliente("F06","0",TableroActivity.this);
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView =  navigationView.getHeaderView(0);
+        TextView txtName = (TextView) hView.findViewById(R.id.txtVendedorNav);
+        txtName.setText(preferences.getString("User",""));
+
+        CargarClientes(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
+        CargarFacturas(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
+        CargarFacturasIndicadores(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
+        CargaCuotaPorProducto(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
+        CargaMetasPorCliente(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
         //CargarPorRecuperar(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
 
         List items = new ArrayList();
@@ -81,7 +92,9 @@ public class TableroActivity extends AppCompatActivity
             items.add(new Indicadores(R.drawable.logo, "# CLIENTES", Venta[4]));
             items.add(new Indicadores(R.drawable.logo, "# ITEM FACTURADOS", Venta[2]));
             items.add(new Indicadores(R.drawable.logo, "# ITEMS POR CLIENTE", ""));
-            items.add(new Indicadores(R.drawable.logo, "VENTA TOTAL", Venta[0]));
+            items.add(new Indicadores(R.drawable.logo, "VENTA TOTAL", "C$ " + Venta[0]));
+
+            Log.d("", "onCreate: " + Venta[0]);
         }
 
         //items.add(new Indicadores(R.drawable.logo, "VENTA TOTAL", "0"));
@@ -127,7 +140,7 @@ public class TableroActivity extends AppCompatActivity
     {
         if (ManagerURI.isOnlinea(TableroActivity.this))
         {
-            ClientesRepository.getAsyncHttpClientes("F06","0",TableroActivity.this);
+            ClientesRepository.getAsyncHttpClientes(preferences.getString("User",""),preferences.getString("Rol",""),TableroActivity.this);
             //ClientesRepository.getAsyncHttpClientes(Vendedor,Perfil,cnxt);
         }
         else

@@ -41,6 +41,9 @@ public class NumArticulosPorCliente extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_num_articulos_por_cliente);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
@@ -50,6 +53,13 @@ public class NumArticulosPorCliente extends AppCompatActivity {
         mNumArticulosPorClienteList.setAdapter(mNumArticuloPorClienteAdapter);
 
         setTitle("# DE ARTICULOS POR CLIENTE");
+    }
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if (id == 16908332){
+             finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
     @Override
     protected void onPause() {
